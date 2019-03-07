@@ -26,3 +26,36 @@ Register a user with an empty email and password
 # TODO not implemented
 ```
 -->
+
+## Expired Coupon
+
+Successfully redeem an expired campaign coupon code
+
+* [libfaketime](https://github.com/wolfcw/libfaketime)
+* [Is it possible change date in docker container?](https://stackoverflow.com/questions/29556879/is-it-possible-change-date-in-docker-container)
+* [How to set system time dynamically in a Docker container](https://serverfault.com/questions/824631/how-to-set-system-time-dynamically-in-a-docker-container)
+
+```bash
+# pretty print main.js source
+this.campaigns = {
+  WMNSDY2019: {
+    validOn: 1551999600000,
+    discount: 75
+  },
+  ...
+  ORANGE2023: {
+    validOn: 1683154800000,
+    discount: 40
+  }
+}
+
+# if your epoch time is in milliseconds instead of seconds, either put a dot before last three digits, or remove the last three digits
+date -d @1551999600.000
+date -d @1551999600
+# Thu Mar  7 23:00:00 UTC 2019
+
+date -d @1683154800.000
+# Wed May  3 23:00:00 UTC 2023 
+
+# change date > apply coupon > pay
+```
