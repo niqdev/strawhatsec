@@ -33,9 +33,7 @@ RUN git clone https://github.com/rapid7/metasploit-framework.git /usr/share/meta
 
 # add searchsploit (ignore exploitdb-papers)
 COPY .searchsploit_rc /root/
-SHELL ["/bin/bash", "-c"]
-RUN git clone https://github.com/offensive-security/exploitdb.git /opt/exploitdb && \
-  ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit && \
-  searchsploit -u
+RUN git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb && \
+  ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
 
 CMD [ "/bin/bash" ]

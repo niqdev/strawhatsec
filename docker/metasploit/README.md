@@ -17,6 +17,6 @@ docker run --rm --name alpine -it ruby:2.7.2-alpine3.13 ash
 # build
 docker build -t strawhatsec/metasploit ./docker/metasploit
 
-# run
-docker run --rm -p 4444:4444 --name metasploit strawhatsec/metasploit [msfconsole|searchsploit]
+# run and access
+docker run --rm -it -p 4444:4444 --name metasploit strawhatsec/metasploit [msfconsole|searchsploit]
 ```
