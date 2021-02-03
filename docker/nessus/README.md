@@ -12,7 +12,7 @@ docker exec -it phusion bash
 docker build -t strawhatsec/nessus ./docker/nessus
 
 # run
-docker run --rm -p 8834:8834 --name nessus strawhatsec/nessus
+docker run --rm --name nessus -p 8834:8834 strawhatsec/nessus
 
 # access
 docker exec -it nessus bash
