@@ -6,5 +6,7 @@ CTF
 
 Docker
 
+* [Burp Suite](./docker/burpsuite/README.md)
 * [Metasploit](./docker/metasploit/README.md)
 * [Nessus](./docker/nessus/README.md)
+* [wordlists](docker/wordlists/README.md)
