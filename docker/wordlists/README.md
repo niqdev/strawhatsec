@@ -6,10 +6,20 @@
 ```bash
 # base image
 docker run --rm -it --name alpine alpine
+docker run --rm -it --name alpine -v "$(pwd)/share:/share" alpine
 
 # build
 docker build -t strawhatsec/wordlists ./docker/wordlists
 
 # run
-docker run --rm -it --name wordlists -v $(pwd)/wordlists:/wordlists:ro strawhatsec/wordlists
+docker run --rm -it --name wordlists strawhatsec/wordlists
+ls -la /usr/share/wordlists
 ```
+
+<!--
+TODO share volume with host
+
+https://stackoverflow.com/questions/44284484/docker-compose-share-named-volume-between-multiple-containers
+https://stackoverflow.com/questions/47664107/docker-mount-to-folder-overriding-content
+
+-->

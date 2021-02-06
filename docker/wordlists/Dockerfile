@@ -6,5 +6,4 @@ RUN apk add --no-cache \
 
 RUN mkdir -p /usr/share/wordlists && \
   curl -s -k -L http://mng.bz/DzMn -o /usr/share/wordlists/rockyou.txt && \
-  git clone --depth 1 https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists && \
-  ln -sf /usr/share/wordlists /wordlists
+  git clone --depth 1 https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
