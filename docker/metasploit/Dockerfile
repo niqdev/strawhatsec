@@ -24,7 +24,7 @@ RUN apk add --no-cache \
   zlib-dev
 
 # add metasploit
-RUN git clone https://github.com/rapid7/metasploit-framework.git /usr/share/metasploit-framework && \
+RUN git clone --depth 1 https://github.com/rapid7/metasploit-framework.git /usr/share/metasploit-framework && \
   cd /usr/share/metasploit-framework && \
   gem update --system && \
   bundle update --bundler && \
