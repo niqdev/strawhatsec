@@ -63,7 +63,7 @@ Access lab locally
 # download vpn config to "./ctf/htb/*.ovpn"
 https://www.hackthebox.eu/home/htb/access/ovpnfile
 
-# upload vpn config from local machine into shared container volume
+# (wait for containers to start) upload vpn config from local machine into shared container volume
 make do-htb-vpn
 
 # tunnel docker ports LOCAL_PORT:PUBLIC_IP:REMOTE_PORT

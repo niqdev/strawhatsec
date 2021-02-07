@@ -1,8 +1,8 @@
 FROM edgelevel/alpine-xfce-vnc:web
 
 RUN apk add --no-cache \
-  openvpn \
-  openssl
+  openssh \
+  openvpn
 
 RUN apk add --no-cache \
   nmap \
