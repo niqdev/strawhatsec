@@ -38,42 +38,43 @@ make do-create
 
 # delete droplet
 make do-delete
-
-# access droplet
-make do-access
 ```
 
----
-
-> TODO git clone
-
-Access UI
+Start lab
 
 ```bash
-# tunnel docker ports LOCAL_PORT:PUBLIC_IP:REMOTE_PORT
-make do-htb-tunnel
+# access droplet
+make do-access
 
-# connect vnc
-vncviewer localhost:5901
+# clone repo
+git clone https://github.com/niqdev/strawhatsec.git && \
+  cd strawhatsec && \
+  apt install make
+
+# start lab
+make htb-up
+make htb-down
+make htb-logs
 ```
 
-Connect to HTB
+Access lab locally
 
 ```bash
 # download vpn config to "./ctf/htb/*.ovpn"
 https://www.hackthebox.eu/home/htb/access/ovpnfile
 
-make htb-up
-make htb-down
-make htb-logs
+# upload vpn config from local machine into shared container volume
+make do-htb-vpn
 
-# upload connection pack from local machine into container
-make do-share-vpn
+# tunnel docker ports LOCAL_PORT:PUBLIC_IP:REMOTE_PORT
+make do-htb-tunnel
 
+# connect vnc
+vncviewer localhost:5901
+
+# access machines
 docker exec -it htb-lab bash
 openvpn /share/*.ovpn
-
-docker exec -it htb-lab bash
 
 # burp-suite from lab
 http burpsuite:8081
@@ -81,7 +82,4 @@ http burpsuite:8081
 ll /usr/share/wordlists
 # tools
 ll /opt
-
-# burp-suite from host machine
-http localhost:8080
 ```

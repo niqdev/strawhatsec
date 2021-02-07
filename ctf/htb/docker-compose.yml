@@ -7,13 +7,13 @@ services:
     build:
       context: ../../docker/burpsuite
     ports:
-      # vnc
       - 5900:5900
-      # novnc
       - 6080:6080
       # proxy
       - 8080:8081
     hostname: burpsuite
+    devices:
+      - /dev/net/tun
     volumes:
       - ./share/:/share
 
@@ -27,6 +27,9 @@ services:
       # novnc
       - 6081:6080
     hostname: lab
+    # required by openvpn
+    devices:
+      - /dev/net/tun
     volumes:
       - ./share/:/share
       - wordlists:/usr/share/wordlists
@@ -42,6 +45,8 @@ services:
     ports:
       - 4444:4444
     hostname: metasploit
+    devices:
+      - /dev/net/tun
     volumes:
       - ./share/:/share
  

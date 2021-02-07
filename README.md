@@ -11,3 +11,7 @@ Docker
 * [Metasploit](./docker/metasploit/README.md)
 * [Nessus](./docker/nessus/README.md)
 * [wordlists](docker/wordlists/README.md)
+
+TODO
+* publish docker images
+* update makefile `scripts/do_apply.sh` (fix issue with lazy expression doctl)

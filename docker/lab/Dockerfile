@@ -1,6 +1,10 @@
 FROM edgelevel/alpine-xfce-vnc:web
 
 RUN apk add --no-cache \
+  openvpn \
+  openssl
+
+RUN apk add --no-cache \
   nmap \
   nmap-scripts \
   proxychains-ng \

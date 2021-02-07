@@ -17,6 +17,7 @@ check-param-%:
 DO_SSH_KEY := do_htb
 DO_SSH_PATH := ~/.ssh/$(DO_SSH_KEY)
 DO_OPENVPN_PATH := ./ctf/htb/*.ovpn
+DO_SHARE_REMOTE_PATH := ~/strawhatsec/ctf/htb/share
 DO_NAME := htb
 DO_IMAGE := docker-20-04
 DO_SIZE := s-2vcpu-4gb # 20$/month
@@ -73,7 +74,7 @@ do-htb-tunnel:
 
 .PHONY: do-htb-vpn
 do-htb-vpn:
-	scp -i $(DO_SSH_PATH) $(DO_OPENVPN_PATH) root@$(CMD_DO_IP):/share
+	scp -i $(DO_SSH_PATH) $(DO_OPENVPN_PATH) root@$(CMD_DO_IP):$(DO_SHARE_REMOTE_PATH)
 
 ##############################
 
