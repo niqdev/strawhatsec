@@ -76,10 +76,10 @@ vncviewer localhost:5901
 docker exec -it htb-lab bash
 openvpn /share/*.ovpn
 
-# burp-suite from lab
+# access burpsuite from lab
 http burpsuite:8081
-# wordlists
+# wordlists path
 ll /usr/share/wordlists
-# tools
+# tools path
 ll /opt
 ```

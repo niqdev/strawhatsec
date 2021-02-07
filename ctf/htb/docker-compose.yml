@@ -12,8 +12,12 @@ services:
       # proxy
       - 8080:8081
     hostname: burpsuite
+    cap_add:
+      - NET_ADMIN
     devices:
       - /dev/net/tun
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
     volumes:
       - ./share/:/share
 
@@ -27,9 +31,15 @@ services:
       # novnc
       - 6081:6080
     hostname: lab
-    # required by openvpn
+    cap_add:
+      # required by openvpn and wireshark
+      - NET_ADMIN
     devices:
+      # required by openvpn
       - /dev/net/tun
+    sysctls:
+      # required by openvpn: disable ipv6
+      - net.ipv6.conf.all.disable_ipv6=0
     volumes:
       - ./share/:/share
       - wordlists:/usr/share/wordlists
@@ -45,8 +55,12 @@ services:
     ports:
       - 4444:4444
     hostname: metasploit
+    cap_add:
+      - NET_ADMIN
     devices:
       - /dev/net/tun
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
     volumes:
       - ./share/:/share
  
