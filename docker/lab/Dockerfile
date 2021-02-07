@@ -11,7 +11,7 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
   wireshark   
 
-# add fuzzers
+# add fuzzer
 RUN go get -u github.com/OJ/gobuster && \
   go get -u github.com/ffuf/ffuf
 

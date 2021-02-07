@@ -9,12 +9,6 @@ Docker
 * [Burp Suite](./docker/burpsuite/README.md)
 * [Metasploit](./docker/metasploit/README.md)
 * [Nessus](./docker/nessus/README.md)
+
+* [lab](./docker/lab/README.md)
 * [wordlists](docker/wordlists/README.md)
-
-> TODO
-
-```bash
-make htb-up
-make htb-down
-make htb-logs
-```
