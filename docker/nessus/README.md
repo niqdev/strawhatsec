@@ -31,7 +31,7 @@ Alternative manual registration of `Nessus Essentials`
 # get activation code (via email): uuid format in capital case
 https://www.tenable.com/products/nessus/nessus-essentials
 
-# get license and plugins link from
+# get license and plugins link
 https://plugins.nessus.org/v2/offline.php
 
 # copy TENABLE LICENSE
@@ -41,7 +41,7 @@ vim nessus.license
 # restart
 supervisorctl restart nessus
 
-# update plugins
+# how to update plugins
 https://docs.tenable.com/nessus/Content/DownloadAndCopyPlugins.htm
 ```
 
