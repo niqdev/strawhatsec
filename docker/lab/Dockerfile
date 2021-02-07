@@ -7,6 +7,7 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
   nmap \
   nmap-scripts \
+  tcpdump \
   proxychains-ng \
   exiftool \
   john
