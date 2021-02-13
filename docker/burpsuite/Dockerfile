@@ -20,6 +20,6 @@ COPY install_firefox_foxy_proxy.sh /usr/local/bin/install_firefox_foxy_proxy
 RUN mkdir -pv /opt/burp/ && \
   wget -q -O /opt/burp/burpsuite_community_v${BURP_VERSION}.jar \
   https://portswigger.net/burp/releases/download?product=community\&version=${BURP_VERSION}\&type=jar && \
-  echo "${BURP_CHECKSUM}  /opt/burp/burpsuite_community_v${BURP_VERSION}.jar" | shasum -a 256 -c && \
+  echo "${BURP_CHECKSUM}  /opt/burp/burpsuite_community_v${BURP_VERSION}.jar" | sha256sum -c && \
   ln -sf /opt/burp/burpsuite_community_v${BURP_VERSION}.jar /opt/burp/burpsuite.jar && \
   chmod u+x /usr/local/bin/burpsuite /usr/local/bin/install_firefox_foxy_proxy
