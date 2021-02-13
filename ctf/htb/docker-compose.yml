@@ -7,10 +7,10 @@ services:
     build:
       context: ../../docker/burpsuite
     ports:
-      - 5900:5900
-      - 6080:6080
+      - 127.0.0.1:5900:5900
+      #- 127.0.0.1:6080:6080
       # proxy
-      - 8080:8081
+      - 127.0.0.1:8080:8081
     hostname: burpsuite
     cap_add:
       - NET_ADMIN
@@ -27,9 +27,9 @@ services:
       context: ../../docker/lab
     ports:
       # vnc
-      - 5901:5900
+      - 127.0.0.1:5901:5900
       # novnc
-      - 6081:6080
+      #- 127.0.0.1:6081:6080
     hostname: lab
     cap_add:
       # required by openvpn and wireshark
@@ -53,7 +53,7 @@ services:
     # equivalent to "docker run -t"
     tty: true
     ports:
-      - 4444:4444
+      - 127.0.0.1:4444:4444
     hostname: metasploit
     cap_add:
       - NET_ADMIN
