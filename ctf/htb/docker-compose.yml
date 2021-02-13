@@ -8,7 +8,7 @@ services:
       context: ../../docker/burpsuite
       args:
         - BURP_VERSION=2021.2
-        - BURP_CHECKSUM=37e1b9b3bdf804e6378afc96feb3416d073d1d803d8950041875b39e3490ac73
+        - BURP_CHECKSUM=2c4c67ce7c0252d75faf8b43887562c67578a4cb02952f10876ac79e9e966933
     ports:
       - 127.0.0.1:5900:5900
       - 127.0.0.1:6080:6080
