@@ -6,9 +6,12 @@ services:
     container_name: htb-burpsuite
     build:
       context: ../../docker/burpsuite
+      args:
+        - BURP_VERSION=2021.2
+        - BURP_CHECKSUM=37e1b9b3bdf804e6378afc96feb3416d073d1d803d8950041875b39e3490ac73
     ports:
       - 127.0.0.1:5900:5900
-      #- 127.0.0.1:6080:6080
+      - 127.0.0.1:6080:6080
       # proxy
       - 127.0.0.1:8080:8081
     hostname: burpsuite
@@ -25,11 +28,12 @@ services:
     container_name: htb-lab
     build:
       context: ../../docker/lab
+    # restrict access to localhost
     ports:
       # vnc
       - 127.0.0.1:5901:5900
       # novnc
-      #- 127.0.0.1:6081:6080
+      - 127.0.0.1:6081:6080
     hostname: lab
     cap_add:
       # required by openvpn and wireshark
