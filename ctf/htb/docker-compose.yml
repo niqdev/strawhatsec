@@ -29,6 +29,7 @@ services:
     build:
       context: ../../docker/lab
     # restrict access to localhost
+    # https://github.com/docker/for-linux/issues/690
     ports:
       # vnc
       - 127.0.0.1:5901:5900
