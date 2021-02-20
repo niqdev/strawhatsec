@@ -69,15 +69,16 @@ make do-htb-vpn
 # tunnel docker ports LOCAL_PORT:PUBLIC_IP:REMOTE_PORT
 make do-htb-tunnel
 
-# connect vnc
-vncviewer localhost:5901
+# vnc
+vncviewer localhost:5900
+http://localhost:6080
 
-# access machines
+# access machines [burpsuite|lab|metasploit]
 docker exec -it htb-lab bash
+
+# connect to htb
 openvpn /share/*.ovpn
 
-# access burpsuite from lab
-http burpsuite:8081
 # wordlists path
 ll /usr/share/wordlists
 # tools path
