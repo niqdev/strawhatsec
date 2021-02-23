@@ -84,3 +84,16 @@ ll /usr/share/wordlists
 # tools path
 ll /opt
 ```
+
+Start temporary containers
+
+```bash
+# ubuntu
+docker run --rm -v htb_wordlists:/share --name phusion phusion/baseimage:master-amd64
+
+apt update
+apt install hashcat
+
+# https://hashcat.net/wiki/doku.php?id=example_hashes
+hashcat -a 3 -m <HASH_MODE> '<HASH_VALUE>' /share/rockyou.txt
+```
