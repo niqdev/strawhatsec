@@ -89,7 +89,8 @@ Start temporary containers
 
 ```bash
 # ubuntu
-docker run --rm -v htb_wordlists:/share --name phusion phusion/baseimage:master-amd64
+docker run --rm --name phusion -v htb_wordlists:/share phusion/baseimage:master-amd64
+docker exec -it phusion bash
 
 apt update
 apt install hashcat

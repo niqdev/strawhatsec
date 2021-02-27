@@ -1,6 +1,6 @@
 FROM edgelevel/alpine-xfce-vnc:base
 
-# community edition JAR
+# Burp Suite Community Edition JAR
 ARG BURP_VERSION="2020.12.1"
 ARG BURP_CHECKSUM="01ca0fc955d47f66067d7dbf19bb4665e4383fbcd2b1815bf4be7bb6b5e2bded"
 
