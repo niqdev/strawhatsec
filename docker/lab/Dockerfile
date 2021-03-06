@@ -18,7 +18,7 @@ RUN apk add --no-cache \
 
 # add fuzzer
 # alternative: dirb, dirbuster, dirsearch
-RUN go get -u github.com/OJ/gobuster && \
+RUN go install github.com/OJ/gobuster/v3@latest && \
   go get -u github.com/ffuf/ffuf
 
 # add privesc
