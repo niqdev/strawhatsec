@@ -17,6 +17,7 @@ RUN apk add --no-cache \
   wireshark   
 
 # add fuzzer
+# alternative: dirb, dirbuster, dirsearch
 RUN go get -u github.com/OJ/gobuster && \
   go get -u github.com/ffuf/ffuf
 
