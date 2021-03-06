@@ -4,7 +4,11 @@ services:
 
   burpsuite:
     container_name: htb-burpsuite
-    image: strawhatsec/burpsuite
+    build:
+      context: ../../docker/burpsuite
+      args:
+        - BURP_VERSION=2021.2.1
+        - BURP_CHECKSUM=b66f35739cc1154b42a002d924fadbac2e080f42c1b1d14be4848431b044dd74
     ports:
       - 127.0.0.1:5900:5900
       - 127.0.0.1:6080:6080
@@ -22,7 +26,8 @@ services:
 
   lab:
     container_name: htb-lab
-    image: strawhatsec/lab
+    build:
+      context: ../../docker/lab
     # restrict access to localhost
     # https://github.com/docker/for-linux/issues/690
     ports:
@@ -48,7 +53,8 @@ services:
   
   metasploit:
     container_name: htb-metasploit
-    image: strawhatsec/metasploit
+    build:
+      context: ../../docker/metasploit
     # equivalent to "docker run -i"
     stdin_open: true
     # equivalent to "docker run -t"
@@ -67,7 +73,8 @@ services:
  
   wordlists:
     container_name: htb-wordlists
-    image: strawhatsec/wordlists
+    build:
+      context: ../../docker/wordlists
     stdin_open: true
     tty: true
     hostname: wordlists

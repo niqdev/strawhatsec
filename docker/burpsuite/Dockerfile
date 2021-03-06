@@ -1,8 +1,8 @@
 FROM edgelevel/alpine-xfce-vnc:base
 
 # Burp Suite Community Edition JAR
-ARG BURP_VERSION="2020.12.1"
-ARG BURP_CHECKSUM="01ca0fc955d47f66067d7dbf19bb4665e4383fbcd2b1815bf4be7bb6b5e2bded"
+ARG BURP_VERSION="2021.2.1"
+ARG BURP_CHECKSUM="b66f35739cc1154b42a002d924fadbac2e080f42c1b1d14be4848431b044dd74"
 
 RUN apk add --no-cache \
   openjdk11-jdk \
