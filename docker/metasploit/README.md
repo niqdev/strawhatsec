@@ -1,9 +1,15 @@
 # Metasploit
 
+[![Docker Cloud Build Status][build-image]][build-url]
+
+[build-image]: https://img.shields.io/docker/cloud/build/strawhatsec/metasploit?style=flat-square
+[build-url]: https://hub.docker.com/r/strawhatsec/metasploit
+
 Metasploit and SearchSploit
 
 * [Documentation](https://docs.rapid7.com/metasploit)
 * [Exploit Database](https://www.exploit-db.com)
+* [exploitdb](https://github.com/offensive-security/exploitdb)
 
 Alternative docker images
 

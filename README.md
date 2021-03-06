@@ -13,5 +13,4 @@ Docker
 * [wordlists](docker/wordlists/README.md)
 
 TODO
-* publish docker images and update docker-compose
 * update makefile `scripts/do_apply.sh` (fix issue with lazy expression doctl)
