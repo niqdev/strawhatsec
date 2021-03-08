@@ -25,4 +25,7 @@ docker build -t strawhatsec/metasploit ./docker/metasploit
 
 # run and access
 docker run --rm -it --name metasploit -p 4444:4444 strawhatsec/metasploit [msfconsole|searchsploit]
+
+# update db
+searchsploit -u
 ```
