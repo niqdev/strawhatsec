@@ -70,10 +70,13 @@ make do-htb-vpn
 make do-htb-tunnel
 
 # vnc
+# lab: 5900/6080
+# reverse: 5901
+# burpsuite: 5902
 vncviewer localhost:5900
 http://localhost:6080
 
-# access machines [burpsuite|lab|metasploit]
+# access containers [lab|reverse|burpsuite|metasploit]
 docker exec -it htb-lab bash
 
 # connect to htb

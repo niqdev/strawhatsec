@@ -2,24 +2,6 @@ version: "3"
 
 services:
 
-  burpsuite:
-    container_name: htb-burpsuite
-    image: strawhatsec/burpsuite
-    ports:
-      - 127.0.0.1:5900:5900
-      - 127.0.0.1:6080:6080
-      # proxy
-      - 127.0.0.1:8080:8081
-    hostname: burpsuite
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=0
-    volumes:
-      - ./share/:/share
-
   lab:
     container_name: htb-lab
     image: strawhatsec/lab
@@ -27,9 +9,9 @@ services:
     # https://github.com/docker/for-linux/issues/690
     ports:
       # vnc
-      - 127.0.0.1:5901:5900
+      - 127.0.0.1:5900:5900
       # novnc
-      - 127.0.0.1:6081:6080
+      - 127.0.0.1:6080:6080
       # reverse shell
       #- 4242:4242
     hostname: lab
@@ -45,7 +27,33 @@ services:
     volumes:
       - ./share/:/share
       - wordlists:/usr/share/wordlists
-  
+
+  reverse:
+    container_name: htb-reverse
+    image: strawhatsec/reverse
+    ports:
+      - 127.0.0.1:5901:5900
+    hostname: reverse
+    volumes:
+      - ./share/:/share
+
+  burpsuite:
+    container_name: htb-burpsuite
+    image: strawhatsec/burpsuite
+    ports:
+      - 127.0.0.1:5902:5900
+      # proxy
+      - 127.0.0.1:8080:8081
+    hostname: burpsuite
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+    volumes:
+      - ./share/:/share
+
   metasploit:
     container_name: htb-metasploit
     image: strawhatsec/metasploit
