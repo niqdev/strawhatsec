@@ -22,6 +22,7 @@ RUN mkdir -p /opt/apktool/ && \
   chmod u+x /usr/local/bin/apktool
 
 # setup dex2jar
+# TODO fix hardcoded url `../files/1867564/..`
 RUN mkdir -p /opt/dex2jar/ && \
   wget -q -O /opt/dex2jar/dex-tools-${DEX2JAR_VERSION}.zip \
   https://github.com/pxb1988/dex2jar/files/1867564/dex-tools-${DEX2JAR_VERSION}.zip && \
