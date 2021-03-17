@@ -1,6 +1,9 @@
 # Reverse
 
-> TODO
+[![Docker Cloud Build Status][build-image]][build-url]
+
+[build-image]: https://img.shields.io/docker/cloud/build/strawhatsec/reverse?style=flat-square
+[build-url]: https://hub.docker.com/r/strawhatsec/reverse
 
 ```bash
 # build
