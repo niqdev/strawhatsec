@@ -11,6 +11,7 @@ Docker
 * [Metasploit](docker/metasploit/README.md)
 * [Nessus](docker/nessus/README.md)
 * [wordlists](docker/wordlists/README.md)
+* [reverse](docker/reverse/README.md)
 
 TODO
 * update makefile `scripts/do_apply.sh` (fix issue with lazy expression doctl)
