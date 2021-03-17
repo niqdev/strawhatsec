@@ -2,6 +2,18 @@
 
 > TODO
 
+```bash
+# build
+docker build -t strawhatsec/reverse ./docker/reverse
+
+# run and access
+docker run --rm --name reverse -p 5900:5900 strawhatsec/reverse
+docker exec -it reverse bash
+
+# vnc
+vncviewer localhost:5900
+```
+
 ## Android
 
 * [android-security-awesome](https://github.com/ashishb/android-security-awesome)
@@ -9,3 +21,12 @@
 * [Apktool](https://ibotpeaches.github.io/Apktool)
 * [dex2jar](https://github.com/pxb1988/dex2jar)
 * [JD-GUI](http://java-decompiler.github.io)
+* [APK Studio](https://github.com/vaibhavpandeyvpz/apkstudio) TODO
+    - [AppImage](https://appimage.org)
+    - [AppImage on Alpine](https://github.com/AppImage/AppImageKit/issues/1015)
+
+## Binary
+
+* [Ghidra](https://ghidra-sre.org)
+* [Radare2](https://www.radare.org) TODO
+* [IDA](https://www.hex-rays.com/products/ida) TODO
