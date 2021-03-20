@@ -29,5 +29,9 @@ vncviewer localhost:5900
 ## Binary
 
 * [Ghidra](https://ghidra-sre.org)
-* [Radare2](https://www.radare.org) *TODO*
-* [IDA](https://www.hex-rays.com/products/ida) *TODO*
+* [Radare2](https://www.radare.org)
+
+*TODO* Alternatives
+* [Cutter](https://cutter.re)
+* [IDA](https://www.hex-rays.com/products/ida)
+* [QIRA](https://qira.me)

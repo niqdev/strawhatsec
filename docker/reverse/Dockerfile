@@ -19,7 +19,11 @@ RUN apk add --no-cache \
   make \
   gdb
 
-# setup apktool
+RUN apk add --no-cache \
+  file \
+  exiftool
+
+# apktool
 RUN mkdir -p /opt/apktool/ && \
   wget -q -O /opt/apktool/apktool_${APKTOOL_VERSION}.jar \
   https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_${APKTOOL_VERSION}.jar && \
@@ -27,7 +31,7 @@ RUN mkdir -p /opt/apktool/ && \
   echo "java -jar /opt/apktool/apktool.jar" > /usr/local/bin/apktool && \
   chmod u+x /usr/local/bin/apktool
 
-# setup dex2jar
+# dex2jar
 # TODO fix hardcoded url `../files/1867564/..`
 RUN mkdir -p /opt/dex2jar/ && \
   wget -q -O /opt/dex2jar/dex-tools-${DEX2JAR_VERSION}.zip \
@@ -36,7 +40,7 @@ RUN mkdir -p /opt/dex2jar/ && \
   mv /opt/dex2jar/dex-tools-${DEX2JAR_VERSION} /opt/dex2jar/dex-tools && \
   ln -sf /opt/dex2jar/dex-tools/d2j-dex2jar.sh /usr/local/bin/dex2jar
 
-# setup jd-gui
+# jd-gui
 RUN mkdir -p /opt/jd-gui/ && \
   wget -q -O /opt/jd-gui/jd-gui-${JDGUI_VERSION}.jar \
   https://github.com/java-decompiler/jd-gui/releases/download/v${JDGUI_VERSION}/jd-gui-${JDGUI_VERSION}.jar && \
@@ -44,7 +48,8 @@ RUN mkdir -p /opt/jd-gui/ && \
   echo "java -jar /opt/jd-gui/jd-gui.jar" > /usr/local/bin/jd-gui && \
   chmod u+x /usr/local/bin/jd-gui
 
-# setup ghidra
+# ghidra
+# TODO https://github.com/NationalSecurityAgency/ghidra/issues/1495#issuecomment-803432740
 RUN mkdir -p /opt/ghidra/ && \
   wget -q -O /opt/ghidra/ghidra_${GHIDRA_VERSION}.zip \
   https://ghidra-sre.org/ghidra_${GHIDRA_VERSION}.zip && \
@@ -52,3 +57,6 @@ RUN mkdir -p /opt/ghidra/ && \
   unzip -q /opt/ghidra/ghidra_${GHIDRA_VERSION}.zip -d /tmp/ghidra/ && \
   mv /tmp/ghidra/ghidra_* /opt/ghidra/ghidra_PUBLIC && \
   ln -sf /opt/ghidra/ghidra_PUBLIC/ghidraRun /usr/local/bin/ghidra
+
+RUN apk add --no-cache \
+  radare2
