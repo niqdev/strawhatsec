@@ -5,13 +5,19 @@ ARG DEX2JAR_VERSION="2.1-SNAPSHOT"
 ARG JDGUI_VERSION="1.6.6"
 ARG GHIDRA_VERSION="9.2.2_PUBLIC_20201229"
 ARG GHIDRA_CHECKSUM="8cf8806dd5b8b7c7826f04fad8b86fc7e07ea380eae497f3035f8c974de72cf8"
-
-RUN apk add --no-cache \
-  openjdk11-jdk
   
 RUN apk add --no-cache \
   firefox-esr \
   xfce4-terminal
+
+RUN apk add --no-cache \
+  openjdk11-jdk
+
+RUN apk add --no-cache \
+  musl-dev \
+  gcc \
+  make \
+  gdb
 
 # setup apktool
 RUN mkdir -p /opt/apktool/ && \
