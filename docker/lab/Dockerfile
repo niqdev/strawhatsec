@@ -8,8 +8,8 @@ RUN apk add --no-cache \
   nmap \
   nmap-scripts \
   tcpdump \
+  socat \
   proxychains-ng \
-  exiftool \
   john
 
 # add gui
