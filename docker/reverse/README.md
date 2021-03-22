@@ -10,7 +10,7 @@
 docker build -t strawhatsec/reverse ./docker/reverse
 
 # run and access
-docker run --rm --name reverse -p 5900:5900 strawhatsec/reverse
+docker run --rm --name reverse -p 5900:5900 -v "$(pwd):/share" strawhatsec/reverse
 docker exec -it reverse bash
 
 # vnc
