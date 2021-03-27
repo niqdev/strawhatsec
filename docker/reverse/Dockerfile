@@ -48,8 +48,10 @@ RUN mkdir -p /opt/jd-gui/ && \
   echo "java -jar /opt/jd-gui/jd-gui.jar" > /usr/local/bin/jd-gui && \
   chmod u+x /usr/local/bin/jd-gui
 
+RUN apk add --no-cache \
+  radare2
+
 # ghidra
-# TODO https://github.com/NationalSecurityAgency/ghidra/issues/1495#issuecomment-803432740
 RUN mkdir -p /opt/ghidra/ && \
   wget -q -O /opt/ghidra/ghidra_${GHIDRA_VERSION}.zip \
   https://ghidra-sre.org/ghidra_${GHIDRA_VERSION}.zip && \
@@ -58,5 +60,18 @@ RUN mkdir -p /opt/ghidra/ && \
   mv /tmp/ghidra/ghidra_* /opt/ghidra/ghidra_PUBLIC && \
   ln -sf /opt/ghidra/ghidra_PUBLIC/ghidraRun /usr/local/bin/ghidra
 
-RUN apk add --no-cache \
-  radare2
+# fix ghidra issue
+# https://github.com/NationalSecurityAgency/ghidra/issues/1495#issuecomment-803432740
+# https://github.com/Docker-Hub-frolvlad/docker-alpine-glibc
+RUN ALPINE_GLIBC_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
+  ALPINE_GLIBC_VERSION="2.33-r0" && \
+  ALPINE_GLIBC_BASE_FILENAME="glibc-$ALPINE_GLIBC_VERSION.apk" && \
+  ALPINE_GLIBC_BIN_FILENAME="glibc-bin-$ALPINE_GLIBC_VERSION.apk" && \
+  wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+  wget -q \
+    "$ALPINE_GLIBC_URL/$ALPINE_GLIBC_VERSION/$ALPINE_GLIBC_BASE_FILENAME" \
+    "$ALPINE_GLIBC_URL/$ALPINE_GLIBC_VERSION/$ALPINE_GLIBC_BIN_FILENAME" && \
+  apk add --no-cache \
+    "$ALPINE_GLIBC_BASE_FILENAME" \
+    "$ALPINE_GLIBC_BIN_FILENAME" && \
+  rm "$ALPINE_GLIBC_BASE_FILENAME" "$ALPINE_GLIBC_BIN_FILENAME"

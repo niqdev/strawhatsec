@@ -28,8 +28,8 @@ vncviewer localhost:5900
 
 ## Binary
 
-* [Ghidra](https://ghidra-sre.org)
 * [Radare2](https://www.radare.org)
+* [Ghidra](https://ghidra-sre.org)
 
 *TODO* Alternatives
 * [Cutter](https://cutter.re)
