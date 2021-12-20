@@ -8,14 +8,16 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'My Site',
   tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  url: 'https://niqdev.github.io',
+  baseUrl: '/strawhatsec/',
+  organizationName: 'niqdev', // Usually your GitHub org/user name.
+  projectName: 'strawhatsec', // Usually your repo name.
+  deploymentBranch: 'gh-pages',
+
+  trailingSlash: false,
+  favicon: 'img/favicon.ico',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
-
   presets: [
     [
       'classic',

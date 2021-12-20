@@ -102,12 +102,18 @@ yarn run start
 
 * [gh-pages](https://docusaurus.io/docs/deployment#deploying-to-github-pages)
 
-Test locally
+Manual deployment
 
 ```bash
 cd website/
 
+# verify
 yarn install
 yarn run build
 yarn run serve
+
+# manual
+USE_SSH=true GIT_USER=niqdev yarn deploy
 ```
+
+> TODO GitHub Actions
