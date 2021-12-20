@@ -85,7 +85,7 @@ cd website/
 nvm use
 ```
 
-## Development
+### Development
 
 ```bash
 cd website/
@@ -96,4 +96,18 @@ yarn run build
 # start local site with livereload
 # http://localhost:3000
 yarn run start
+```
+
+### Deployment
+
+* [gh-pages](https://docusaurus.io/docs/deployment#deploying-to-github-pages)
+
+Test locally
+
+```bash
+cd website/
+
+yarn install
+yarn run build
+yarn run serve
 ```
