@@ -96,6 +96,9 @@ yarn run build
 # start local site with livereload
 # http://localhost:3000
 yarn run start
+
+# start from root
+make site-start
 ```
 
 ### Deployment

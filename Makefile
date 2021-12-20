@@ -23,9 +23,9 @@ DO_IMAGE := docker-20-04
 DO_SIZE := s-2vcpu-4gb # 20$/month
 DO_REGION := lon1
 
-CMD_DO_IP := $(shell doctl compute droplet list --format PublicIPv4 --no-header)
+CMD_DO_IP = $(shell doctl compute droplet list --format PublicIPv4 --no-header)
 # double $$ to escape
-CMD_DO_FINGERPRINT := $(shell doctl compute ssh-key list -o json | jq -r --arg DO_SSH_KEY $(DO_SSH_KEY) '.[] | select(.name | contains($$DO_SSH_KEY)) | .fingerprint')
+CMD_DO_FINGERPRINT = $(shell doctl compute ssh-key list -o json | jq -r --arg DO_SSH_KEY $(DO_SSH_KEY) '.[] | select(.name | contains($$DO_SSH_KEY)) | .fingerprint')
 
 .PHONY: do-images
 do-images: require-doctl
@@ -89,3 +89,11 @@ htb-down: require-docker
 .PHONY: htb-logs
 htb-logs: require-docker
 	docker-compose -f ctf/htb/docker-compose.yml logs -f -t
+
+##############################
+
+SITE_PATH := website
+
+.PHONY: site-start
+site-start:
+	./website/node_modules/.bin/docusaurus start $(SITE_PATH)

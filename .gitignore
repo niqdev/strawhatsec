@@ -5,3 +5,4 @@ ctf/htb/share
 *.ovpn
 
 .history
+.cache
