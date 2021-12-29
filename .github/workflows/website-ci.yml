@@ -26,7 +26,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version-file: './website/.nvmrc'
-          cache: yarn
       - name: Yarn build
         run: |
           yarn install --frozen-lockfile
