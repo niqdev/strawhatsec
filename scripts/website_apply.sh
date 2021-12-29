@@ -52,7 +52,9 @@ case ${PARAM_ACTION} in
     run_in_website "yarn install"
     run_in_website "yarn run build"
     # publishes to gh-pages
-    run_in_website "USE_SSH=true GIT_USER=${GH_USER} yarn deploy"
+    USE_SSH=true
+    GIT_USER=${PARAM_GH_USER}
+    run_in_website "yarn deploy"
   ;;
   *)
     echo "ERROR: unknown command"
