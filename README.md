@@ -85,8 +85,9 @@ nvm use
 
 ### Development
 
+Starts local site with livereload
+
 ```bash
-# start local site with livereload
 # http://localhost:3000
 make site-start
 ```
@@ -98,15 +99,11 @@ make site-start
 Manual deployment
 
 ```bash
-cd website/
+# serves artifacts locally
+make site-deploy-local
 
-yarn install
-# generate static site
-yarn run build
-yarn run serve
-
-# manual
-USE_SSH=true GIT_USER=niqdev yarn deploy
+# deploys manually on gh-pages
+make site-deploy-gh-manual
 ```
 
 > TODO GitHub Actions

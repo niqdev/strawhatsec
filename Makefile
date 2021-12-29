@@ -95,3 +95,11 @@ htb-logs: require-docker
 .PHONY: site-start
 site-start: require-yarn
 	./scripts/website_apply.sh "site-start"
+
+.PHONY: site-deploy-local
+site-deploy-local: require-yarn
+	./scripts/website_apply.sh "site-deploy-local"
+
+.PHONY: site-deploy-gh-manual
+site-deploy-gh-manual: require-yarn
+	./scripts/website_apply.sh "site-deploy-gh-manual" "niqdev"
