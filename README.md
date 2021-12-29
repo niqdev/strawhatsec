@@ -1,5 +1,7 @@
 # strawhatsec
 
+[![Website CI](https://github.com/niqdev/strawhatsec/actions/workflows/website-ci.yml/badge.svg)](https://github.com/niqdev/strawhatsec/actions/workflows/website-ci.yml)
+
 ## CTF
 
 * [HTB](ctf/htb/README.md)
