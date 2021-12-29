@@ -70,10 +70,8 @@ echo "nodeLinker: pnp" > .yarnrc.yml
 yarn install
 yarn dlx @yarnpkg/doctor
 
-# verify installation
+# verify installation + update .gitignore
 yarn --version # v3.1.1
-
-# update .gitignore
 ```
 
 Configure `nvm`
@@ -88,16 +86,8 @@ nvm use
 ### Development
 
 ```bash
-cd website/
-
-# generate static site
-yarn run build
-
 # start local site with livereload
 # http://localhost:3000
-yarn run start
-
-# start from root
 make site-start
 ```
 
@@ -110,8 +100,8 @@ Manual deployment
 ```bash
 cd website/
 
-# verify
 yarn install
+# generate static site
 yarn run build
 yarn run serve
 

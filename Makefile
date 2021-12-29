@@ -92,8 +92,6 @@ htb-logs: require-docker
 
 ##############################
 
-SITE_PATH := website
-
 .PHONY: site-start
-site-start:
-	./website/node_modules/.bin/docusaurus start $(SITE_PATH)
+site-start: require-yarn
+	./scripts/website_apply.sh "site-start"
