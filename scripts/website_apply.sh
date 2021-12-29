@@ -47,12 +47,14 @@ case ${PARAM_ACTION} in
   ;;
   "site-deploy-gh-manual")
     PARAM_GH_USER=${2:?"Missing GH_USER"}
+    echo "[*] GH_USER=${PARAM_GH_USER}"
 
     run_in_website "nvm use"
     run_in_website "yarn install"
     run_in_website "yarn run build"
     # publishes to gh-pages
     USE_SSH=true
+    CURRENT_BRANCH="main"
     GIT_USER=${PARAM_GH_USER}
     run_in_website "yarn deploy"
   ;;

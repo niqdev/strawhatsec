@@ -1,0 +1,30 @@
+name: Website CI
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deploy.yml'
+      - 'website/**'
+      - 'docs/**'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+          node-version: 16
+          cache: yarn
+      - name: Yarn build
+        working-directory: website
+        run: |
+          yarn install --frozen-lockfile
+          yarn build

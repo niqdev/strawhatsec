@@ -95,6 +95,7 @@ make site-start
 ### Deployment
 
 * [gh-pages](https://docusaurus.io/docs/deployment#deploying-to-github-pages)
+* [GitHub Action](https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus)
 
 Manual deployment
 
@@ -106,4 +107,4 @@ make site-deploy-local
 make site-deploy-gh-manual
 ```
 
-> TODO GitHub Actions
+Every time that a tag starting with `v` is pushed, then a deployment is triggered on GitHub
