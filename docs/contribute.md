@@ -79,6 +79,10 @@ Starts local site with livereload
 make site-start
 ```
 
+Resources
+
+* [Landing page](https://stackoverflow.com/questions/58665817/redirect-to-docs-from-landing-page-in-docusaurus-v2)
+
 ## Deployment
 
 Resources

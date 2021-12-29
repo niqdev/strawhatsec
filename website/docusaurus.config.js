@@ -10,8 +10,8 @@ const config = {
   tagline: 'Dinosaurs are cool',
   url: 'https://niqdev.github.io',
   baseUrl: '/strawhatsec/',
-  organizationName: 'niqdev', // Usually your GitHub org/user name.
-  projectName: 'strawhatsec', // Usually your repo name.
+  organizationName: 'niqdev',
+  projectName: 'strawhatsec',
   deploymentBranch: 'gh-pages',
 
   trailingSlash: false,
