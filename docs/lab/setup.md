@@ -5,13 +5,11 @@ title: Setup
 
 :::tip TODO
 
-move in htb document
+update doc
 
 :::
 
 ```
-* [HTB](ctf/htb/README.md)
-
 Docker
 
 * [Burp Suite](docker/burpsuite/README.md)
