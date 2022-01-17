@@ -1,10 +1,14 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 id: the-shellcoder-s-handbook
 title: The Shellcoder's Handbook
 ---
 
-# The Shellcoder's Handbook (2007)
+# The Shellcoder's Handbook
+
+Resources
+
+* [The Shellcoder's Handbook (2007)](https://www.wiley.com/en-us/The+Shellcoder%27s+Handbook%3A+Discovering+and+Exploiting+Security+Holes%2C+2nd+Edition-p-9780470080238)
 
 ## Introduction
 
