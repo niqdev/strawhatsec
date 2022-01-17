@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
+  title: 'StrawHatSec',
   tagline: 'Dinosaurs are cool',
   url: 'https://niqdev.github.io',
   baseUrl: '/strawhatsec/',
@@ -42,7 +42,7 @@ const config = {
         title: 'StrawHatSec',
         logo: {
           alt: 'StrawHatSec Logo',
-          src: 'img/logo.svg',
+          src: 'img/hat.png',
           href: 'docs/home'
         },
         items: [
