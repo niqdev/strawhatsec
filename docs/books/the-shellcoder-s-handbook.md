@@ -6,19 +6,13 @@ title: The Shellcoder's Handbook
 
 # The Shellcoder's Handbook
 
-[The Shellcoder's Handbook (2007)](https://www.wiley.com/en-us/The+Shellcoder%27s+Handbook%3A+Discovering+and+Exploiting+Security+Holes%2C+2nd+Edition-p-9780470080238)
-
-## Introduction
-
+:::tip About
 This book is about code and data, and what happens when the two become confused
 
-## Chapter 1
+[The Shellcoder's Handbook (2007)(2nd)](https://www.wiley.com/en-us/The+Shellcoder%27s+Handbook%3A+Discovering+and+Exploiting+Security+Holes%2C+2nd+Edition-p-9780470080238)
+:::
 
-### Extra resources
-
-* [Computer Science 217: Introduction to Programming Systems (Spring 2004)](https://www.cs.princeton.edu/courses/archive/spring04/cos217)
-* [Linux Memory Management](https://linux-mm.org)
-* [GDB: The GNU Project Debugger](https://www.sourceware.org/gdb/documentation)
+## Chapter 1: Before You Begin
 
 ### Notes
 
@@ -61,3 +55,20 @@ Argc
     * *Segment* register on an IA32 processor are 16 bit (other registers are 32 bits in size). Segment registers, such as `CS`, `DS`, and `SS`, are used to keep track of segments and to allow backward compatibility with 16-bit applications
     * *Control* registers are used to control the function of the processor. The most important of these registers for the IA32 is the *Extended Instruction Pointer* `EIP` or simply the *Instruction Pointer*. `EIP` contains the address of the next machine instruction to be executed
     * Other registers include *Extended Flags* `EFLAGS` register, which comprises many single-bit registers that are used to store the results of various tests performed by the processor
+
+### Resources
+
+* [Linux Memory Management](https://linux-mm.org)
+* [GDB: The GNU Project Debugger](https://www.sourceware.org/gdb/documentation)
+
+### Extra
+
+* [Computer Science 217: Introduction to Programming Systems (Spring 2004)](https://www.cs.princeton.edu/courses/archive/spring04/cos217)
+
+## Chapter 2: Stack Overflows
+
+> TODO
+
+### Resources
+
+* [Smashing the Stack for Fun and Profit](http://insecure.org/stf/smashstack.html)
