@@ -6,3 +6,5 @@ ctf/htb/share
 
 .history
 .cache
+
+*.out
