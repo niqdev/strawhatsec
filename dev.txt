@@ -1,0 +1,5 @@
+# see readme
+https://github.com/l34n/CySecBooks
+
+# TODO
+github.dev/niqdev/strawhatsec
