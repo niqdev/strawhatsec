@@ -13,6 +13,9 @@ NVM_DIR="$HOME/.nvm"
 
 ##############################
 
+# `nvm` supports only current path
+# `yarn --cwd` specify the work dir, but you can't specify which version to use
+# if yarn v1 is installed globally you won't be able to use v2 in the sub-path unless you change directory
 # https://opensource.com/article/19/8/navigating-bash-shell-pushd-popd
 function run_in_website {
   local WEBSITE_PATH="${CURRENT_PATH}/../website"
