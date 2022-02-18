@@ -1,5 +1,7 @@
 # see readme
 https://github.com/l34n/CySecBooks
 
+https://inventory.rawsec.ml/overview.html
+
 # TODO
 github.dev/niqdev/strawhatsec
