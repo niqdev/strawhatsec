@@ -7,4 +7,5 @@ ctf/htb/share
 .history
 .cache
 
+*.o
 *.out
