@@ -99,3 +99,17 @@ make site-deploy-local
 # builds and deploys manually on gh-pages
 make site-deploy-gh-manual
 ```
+
+## Docker
+
+Actions
+
+* [login-action](https://github.com/docker/login-action)
+* [metadata-action](https://github.com/docker/metadata-action)
+* [build-push-action](https://github.com/docker/build-push-action)
+
+Secrets
+* create an Access Token on [DockerHub](https://hub.docker.com/settings/security)
+* add *New repository secret* on [GitHub](https://github.com/niqdev/strawhatsec/settings/secrets/actions)
+
+A build is triggered on every push if there is a change in the `docker` folder
