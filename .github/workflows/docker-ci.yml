@@ -15,7 +15,7 @@ env:
   REPOSITORY_NAME: ${{ github.event.repository.name }}
 
 jobs:
-  docker-wordlists:
+  docker:
     name: Docker
     runs-on: ubuntu-20.04
     steps:
@@ -26,16 +26,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: ${{ env.REPOSITORY_NAME }}/wordlists
-      - name: Build and push
+
+      - name: Build and push (wordlists)
         uses: docker/build-push-action@v2
         with:
           context: ./docker/wordlists
           # if false it will only build
           push: true
-          # TODO wordlists
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: strawhatsec/wordlists:latest
