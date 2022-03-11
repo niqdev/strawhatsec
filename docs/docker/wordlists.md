@@ -1,8 +1,13 @@
+---
+sidebar_position: 2
+title: wordlists
+---
+
 # wordlists
 
-[![Docker Cloud Build Status][build-image]][build-url]
+[![Docker CI][build-image]][build-url]
 
-[build-image]: https://img.shields.io/docker/cloud/build/strawhatsec/wordlists?style=flat-square
+[build-image]: https://github.com/niqdev/strawhatsec/actions/workflows/docker-ci.yml/badge.svg
 [build-url]: https://hub.docker.com/r/strawhatsec/wordlists
 
 * [SecLists](https://github.com/danielmiessler/SecLists)
