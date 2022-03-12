@@ -67,8 +67,34 @@ Argc
 
 ## Chapter 2: Stack Overflows
 
-> TODO
+* Stack overflows are possible because no inherent bounds-checking exists on buffers in the C or C++ languages.
+
+```bash
+docker run --rm -it \
+  --name ubuntu \
+  -v "$(pwd)/books/the-shellcoder-s-handbook:/share" \
+  --platform linux/386 \
+  i386/ubuntu:20.04 \
+  bash
+
+apt update && apt install gcc gdb nasm -y
+```
+
+Code examples
+
+```bash
+cd /share/chapter02
+
+# buffer
+# buffer2
+```
+
+> TODO 13
 
 ### Resources
 
-* [Smashing the Stack for Fun and Profit](http://insecure.org/stf/smashstack.html)
+* [Smashing the Stack for Fun and Profit](http://phrack.org/archives/issues/49/14.txt)
+
+### Extras
+
+* [How do I enable core dumps for everybody](https://www.akadia.com/services/ora_enable_core.html)
