@@ -72,7 +72,7 @@ Argc
 ```bash
 docker run --rm -it \
   --name ubuntu \
-  -v "$(pwd)/books/the-shellcoder-s-handbook:/share" \
+  -v "$(pwd)/notes/the-shellcoder-s-handbook:/share" \
   --platform linux/386 \
   i386/ubuntu:20.04 \
   bash
