@@ -24,7 +24,10 @@ title: Network
 * [SSH Tunneling Explained](https://goteleport.com/blog/ssh-tunneling-explained)
 * [SSH Bastion Host](https://goteleport.com/blog/ssh-bastion-host)
 * [The State Of Web Scraping in 2021](https://mihaisplace.blog/2021/10/03/the-state-of-web-scraping-in-2021)
-* TODO dns, netcat
+* [A short overview of DNS](https://cuddly-octo-palm-tree.com/posts/2021-10-17-dns)
+* [The WebSocket Handbook](https://ably.com/blog/introducing-the-websocket-handbook)
+* [Anatomy of a JWT](https://fusionauth.io/learn/expert-advice/tokens/anatomy-of-jwt)
+* TODO netcat
 
 ## Discovery
 
@@ -50,6 +53,6 @@ title: Network
 
 * [Awesome Bluetooth Security](https://github.com/engn33r/awesome-bluetooth-security)
 
-## Uncategorized
+## Random projects
 
-* [Ottr: A Serverless Public Key Infrastructure Framework](https://medium.com/airbnb-engineering/meet-ottr-a-serverless-public-key-infrastructure-framework-f6580010ae0c) TODO delete?
+* [TinySSH](https://tinyssh.org)
