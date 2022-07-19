@@ -61,6 +61,17 @@ case ${PARAM_ACTION} in
     GIT_USER=${PARAM_GH_USER}
     run_in_website "yarn deploy"
   ;;
+  "site-upgrade")
+    run_in_website "nvm use"
+    run_in_website "yarn --version"
+    # upgrade yarn
+    run_in_website "yarn set version stable"
+    # https://github.com/browserslist/browserslist#browsers-data-updating
+    run_in_website "npx browserslist@latest --update-db"
+    # upgrade dependencies manually
+    run_in_website "yarn plugin import interactive-tools"
+    run_in_website "yarn upgrade-interactive"
+  ;;
   *)
     echo "ERROR: unknown command"
     exit 1

@@ -103,3 +103,7 @@ site-deploy-local: require-yarn
 .PHONY: site-deploy-gh-manual
 site-deploy-gh-manual: require-yarn
 	./scripts/website_apply.sh "site-deploy-gh-manual" "niqdev"
+
+.PHONY: site-upgrade
+site-upgrade: require-yarn
+	./scripts/website_apply.sh "site-upgrade"
