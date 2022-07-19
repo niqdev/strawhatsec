@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[357],{2229:(e,t,n)=>{n.d(t,{Z:()=>u});var r=n(7294),s=n(6775);function u(){return r.createElement(s.l_,{to:"/strawhatsec/docs/home"})}},2388:(e,t,n)=>{n.r(t),n.d(t,{default:()=>u});var r=n(7294),s=n(2229);function u(){return r.createElement(s.Z,null)}}}]);
