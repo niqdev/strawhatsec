@@ -1,4 +1,4 @@
-# strawhatsec
+# StrawHatSec
 
 [![Build Status][build-image]][build-url]
 [![Book Version][tag-image]][tag-url]
