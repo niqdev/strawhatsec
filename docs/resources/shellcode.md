@@ -2,8 +2,6 @@
 title: Shellcode
 ---
 
-# Shellcode
-
 Resources
 
 * [Shellcoding for Linux and Windows Tutorial](https://www.vividmachines.com/shellcode/shellcode.html)

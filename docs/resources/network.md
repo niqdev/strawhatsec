@@ -54,12 +54,15 @@ title: Network
 
 ## Scanner
 
+* [Port Scanner Shootout](https://s0cm0nkey.gitbook.io/port-scanner-shootout)
 * [nmap](https://nmap.org)
   ```bash
   TODO examples
   https://www.howtogeek.com/423709/how-to-see-all-devices-on-your-network-with-nmap-on-linux
   ```
 * [RustScan](https://rustscan.github.io/RustScan)
+* [Spidex](https://github.com/alechilczenko/spidex) - continuous reconnaissance scanner
+* [goscan](https://github.com/sdcampbell/goscan)
 
 ## Tools
 

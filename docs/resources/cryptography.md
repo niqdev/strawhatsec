@@ -19,6 +19,7 @@ title: Cryptography
 * [Comparing SSH Keys - RSA, DSA, ECDSA, or EdDSA?](https://gravitational.com/blog/comparing-ssh-keys)
 * [How SHA-2 Works Step-By-Step (SHA-256)](https://qvault.io/2020/07/08/how-sha-2-works-step-by-step-sha-256)
 * [The SHA-256 Project](https://github.com/oconnor663/sha256_project)
+* [How SHA-256 Works Step-By-Step](https://blog.boot.dev/cryptography/how-sha-2-works-step-by-step-sha-256)
 * [So you want to roll your own crypto?](https://vnhacker.blogspot.com/2020/08/so-you-want-to-roll-your-own-crypto.html)
 * [How to crack RSA-512 on off-the-shelf hardware in 4 days](https://yurichev.com/news/20220210_RSA)
 * [Implementing RSA in Python from Scratch](https://coderoasis.com/implementing-rsa-from-scratch-in-python)
@@ -31,6 +32,7 @@ title: Cryptography
 * [Schneier on Security](https://www.schneier.com)
 * [A Few Thoughts on Cryptographic Engineering](https://blog.cryptographyengineering.com)
 * [Cryptologie](https://www.cryptologie.net)
+* [Semantically Secure](https://scottarc.blog)
 
 ## Tools
 
