@@ -13,12 +13,16 @@ title: CTF
 * [Tools and resources to prepare for a hacker CTF competition or challenge](https://resources.infosecinstitute.com/topic/tools-of-trade-and-resources-to-prepare-in-a-hacker-ctf-competition-or-challenge)
 * [OSUSEC Resources List](https://www.osusec.org/resources)
 
-## TODO
+## Collections
 
-* [Hacking and CTF Cheat Sheet](https://github.com/hasamba/Hacking-and-CTF-Cheat-Sheet)
+* [HackTricks](https://book.hacktricks.xyz)
 * [Payloads All The Things](https://github.com/swisskyrepo/PayloadsAllTheThings)
-* [Game Hacking Academy](https://gamehacking.academy)
+* [Red Teaming Experiments](https://www.ired.team)
+* [All About OSCP](https://oscp.infosecsanyam.in)
 * [The Magic of Learning](https://bitvijays.github.io)
+* [Hacking and CTF Cheat Sheet](https://github.com/hasamba/Hacking-and-CTF-Cheat-Sheet)
+* [Transmission](https://wiki.transmission.ninja)
+* [The Hacker Recipes](https://www.thehacker.recipes)
 
 ## Platform
 
@@ -43,6 +47,9 @@ title: CTF
 * [crackmes](https://crackmes.one) - Reverse
 * [MemLabs](https://github.com/stuxnet999/MemLabs) - Memory Forensics
 * [Microcorruption](https://microcorruption.com) - Embedded Security CTF
+* [Wargames](https://overthewire.org)
+* [Vulhub](https://vulhub.org)
+* [Game Hacking Academy](https://gamehacking.academy)
 
 # Cloud
 
@@ -69,3 +76,4 @@ title: CTF
 * [HackerOne](https://www.hackerone.com)
 * [Zerodium](https://zerodium.com)
 * [Immunefi](https://immunefi.com)
+* [Bugcrowd](https://www.bugcrowd.com)

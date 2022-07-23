@@ -18,9 +18,11 @@ title: Cryptography
 * [How Rainbow Tables work](https://kestas.kuliukas.com/RainbowTables)
 * [Comparing SSH Keys - RSA, DSA, ECDSA, or EdDSA?](https://gravitational.com/blog/comparing-ssh-keys)
 * [How SHA-2 Works Step-By-Step (SHA-256)](https://qvault.io/2020/07/08/how-sha-2-works-step-by-step-sha-256)
+* [The SHA-256 Project](https://github.com/oconnor663/sha256_project)
 * [So you want to roll your own crypto?](https://vnhacker.blogspot.com/2020/08/so-you-want-to-roll-your-own-crypto.html)
 * [How to crack RSA-512 on off-the-shelf hardware in 4 days](https://yurichev.com/news/20220210_RSA)
 * [Implementing RSA in Python from Scratch](https://coderoasis.com/implementing-rsa-from-scratch-in-python)
+* [Fermat Attack on RSA](https://fermatattack.secvuln.info)
 * [Simple password management with GPG](https://tylerlmz1.github.io/tools/2020/05/15/Password-management.html)
 * [Serve your local website or service on HTTPS with mkcert](https://diamantidis.github.io/tips/2020/06/26/serve-localhost-website-on-https-with-mkcert)
 

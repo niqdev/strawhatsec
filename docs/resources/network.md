@@ -2,6 +2,8 @@
 title: Network
 ---
 
+> TODO
+
 ## Resources
 
 * [Network Protocol Map](https://gist.github.com/CMCDragonkai/14a21fc387b8ea6f585c882d0d0d9334)
@@ -15,37 +17,27 @@ title: Network
 
 * [DNS Record Types](https://www.nslookup.io/learning/dns-record-types)
 * [A short overview of DNS](https://cuddly-octo-palm-tree.com/posts/2021-10-17-dns)
+* [Anatomy of a Linux DNS Lookup](https://zwischenzugs.com/2018/06/08/anatomy-of-a-linux-dns-lookup-part-i)
 * [Building a DNS server in Rust](https://github.com/EmilHernvall/dnsguide) (rust)
 * [Mess with DNS!](https://jvns.ca/blog/2021/12/15/mess-with-dns)
 * [DIY Dynamic DNS Using Netlify API](https://blog.skylerlewis.io/2020/12/diy-dynamic-dns-using-netlify-api.html)
-* [Anatomy of a Linux DNS Lookup](https://zwischenzugs.com/2018/06/08/anatomy-of-a-linux-dns-lookup-part-i)
-* [dog](https://dns.lookup.dog)
-* [q](https://github.com/natesales/q)
+* [dog](https://dns.lookup.dog) (tool)
+* [q](https://github.com/natesales/q) (tool)
 
 ### SSH
 
 * [A visual guide to SSH tunnels](https://robotmoon.com/ssh-tunnels)
 * [SSH Tunneling Explained](https://goteleport.com/blog/ssh-tunneling-explained)
 * [SSH Bastion Host](https://goteleport.com/blog/ssh-bastion-host)
-* [sish](https://github.com/antoniomika/sish) - An open source serveo/ngrok alternative
+* [sish](https://github.com/antoniomika/sish) - ngrok alternative
+* [TinySSH](https://tinyssh.org)
 
-### VPN
+### Privacy
 
-* [WireGuard](https://www.wireguard.com)
-* [tinc](http://tinc-vpn.org)
-* [What is Tailscale?](https://tailscale.com/kb/1151/what-is-tailscale)
-
-### Proxy
-
+* [WireGuard](https://www.wireguard.com) - VPN
+* [Tailscale](https://tailscale.com) - VPN
+* [tinc](http://tinc-vpn.org) - VPN
 * [VPN over SSH? The SOCKS Proxy](https://blog.gwlab.page/vpn-over-ssh-the-socks-proxy-8a8d7bdc7028)
-
-### Remote Desktop
-
-* [Remmina](https://remmina.org)
-* [RustDesk](https://rustdesk.com)
-
-#### Tools
-
 * [Tinyproxy](https://tinyproxy.github.io)
 
 ### Other
@@ -55,40 +47,42 @@ title: Network
 * [The WebSocket Handbook](https://ably.com/blog/introducing-the-websocket-handbook)
 * [Anatomy of a JWT](https://fusionauth.io/learn/expert-advice/tokens/anatomy-of-jwt)
 * [What does it mean to listen on a port?](https://paulbutler.org/2022/what-does-it-mean-to-listen-on-a-port)
-* [Micro BGP Suite: The Swiss Army Knife of Routing Analysis](https://labs.ripe.net/author/lorenzo_cogotti/micro-bgp-suite-the-swiss-army-knife-of-routing-analysis)
-* [Tools to explore BGP](https://jvns.ca/blog/2021/10/05/tools-to-look-at-bgp-routes)
+* [Micro BGP Suite: The Swiss Army Knife of Routing Analysis](https://labs.ripe.net/author/lorenzo_cogotti/micro-bgp-suite-the-swiss-army-knife-of-routing-analysis) - BGP
+* [Tools to explore BGP](https://jvns.ca/blog/2021/10/05/tools-to-look-at-bgp-routes) - BGP
+* [Remmina](https://remmina.org) - Remote Desktop
+* [RustDesk](https://rustdesk.com) - Remote Desktop
 
-## Crawler
+## Scanner
 
-* [The State Of Web Scraping in 2021](https://mihaisplace.blog/2021/10/03/the-state-of-web-scraping-in-2021)
-
-## Scanners
-
-* [nmap](https://www.howtogeek.com/423709/how-to-see-all-devices-on-your-network-with-nmap-on-linux) TODO replace with examples
+* [nmap](https://nmap.org)
+  ```bash
+  TODO examples
+  https://www.howtogeek.com/423709/how-to-see-all-devices-on-your-network-with-nmap-on-linux
+  ```
 * [RustScan](https://rustscan.github.io/RustScan)
 
 ## Tools
 
+* TODO netcat
 * [Networking Tools Every Developer Needs to Know](https://towardsdatascience.com/networking-tools-every-developer-needs-to-know-e17c9159b180)
 * [What is socat?](https://copyconstruct.medium.com/socat-29453e9fc8a6)
-* TODO netcat
 * [ngrok](https://ngrok.com)
 * [Inlets](https://inlets.dev)
-* [HTTP Toolkit](https://httptoolkit.tech)
-* [Ethr](https://github.com/microsoft/ethr)
+* [Ethr](https://github.com/microsoft/ethr) - Network performance
 
-## Main in the Middle
+### Man in the Middle
 
 * [How to Man in the Middle HTTPS Using mitmproxy](https://earthly.dev/blog/mitmproxy)
 * [ssh-mitm: ssh audits made simple](https://github.com/ssh-mitm/ssh-mitm)
+* [HTTP Toolkit](https://httptoolkit.tech)
 
 ## WiFi
 
-### Guides
+### Resources
 
 > TODO
 
-### Attacks
+### Attack
 
 * [Wifiphisher](https://github.com/wifiphisher/wifiphisher)
 * [Reaver](https://tools.kali.org/wireless-attacks/reaver)
@@ -100,7 +94,3 @@ title: Network
 ## Bluetooth
 
 * [Awesome Bluetooth Security](https://github.com/engn33r/awesome-bluetooth-security)
-
-## Random projects
-
-* [TinySSH](https://tinyssh.org)
