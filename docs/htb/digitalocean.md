@@ -1,4 +1,10 @@
-# Hack The Box
+---
+sidebar_position: 3
+id: digitalocean
+title: Hack The Box (DigitalOcean)
+---
+
+# Hack The Box (DigitalOcean)
 
 * [HTB](https://www.hackthebox.eu)
 * [DigitalOcean](https://www.digitalocean.com/docs)
