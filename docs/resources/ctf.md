@@ -46,6 +46,7 @@ title: CTF
 * [Kubernetes Goat](https://madhuakula.com/kubernetes-goat)
 * [kube-goat](https://github.com/ksoclabs/kube-goat)
 * [GCP Goat](https://gcpgoat.joshuajebaraj.com)
+* [GCPGoat](https://github.com/ine-labs/GCPGoat)
 * [Docker Security Playground](https://github.com/DockerSecurityPlayground/DSP)
 
 ## Other
@@ -60,6 +61,9 @@ title: CTF
 * [Game Hacking Academy](https://gamehacking.academy)
 * [CI/CD Goat](https://github.com/cider-security-research/cicd-goat)
 * [GitGoat](https://github.com/arnica-ext/GitGoat)
+* [OWASP Juice Shop](https://owasp.org/www-project-juice-shop)
+* [Damn Vulnerable Javascript SCA](https://github.com/lunasec-io/damn-vulnerable-js-sca)
+* [Capture the Talent](https://capturethetalent.co.uk)
 
 ## Writeup
 
