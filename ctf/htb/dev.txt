@@ -1,7 +1,0 @@
-# network issue: docker (iptables) rules take precedence over ufw rules 
-https://github.com/docker/for-linux/issues/690
-https://www.techrepublic.com/article/how-to-fix-the-docker-and-ufw-security-flaw
-https://p1ngouin.com/posts/how-to-manage-iptables-rules-with-ufw-and-docker
-https://serverfault.com/questions/816903/docker-correct-way-to-restrict-access-to-certain-ip-addresses
-https://serverfault.com/questions/704643/steps-for-limiting-outside-connections-to-docker-container-with-iptables
-https://docs.docker.com/network/iptables
