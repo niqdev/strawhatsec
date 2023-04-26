@@ -1,34 +1,24 @@
 # Networked
 
 Info
+
 * OS: Linux
 * Difficulty: easy
 * IP: `10.10.10.146`
 
 Vulnerabilities
+
 * TODO
 
-<!--
-
-Required tools
-* nmap
-* gobuster
-
-Other commands/tools
-```
-TODO
-```
-
--->
-
-## Walkthrough
+### Walkthrough <a href="#user-content-walkthrough" id="user-content-walkthrough"></a>
 
 * [IppSec](http://youtube.com/watch?v=H3t3G70bakM) (video)
 
-### Enumeration
+#### Enumeration <a href="#user-content-enumeration" id="user-content-enumeration"></a>
 
 Nmap
-```bash
+
+```
 nmap -n -Pn -sC -sV -p- --min-rate 1000 -oA nmap.out -v 10.10.10.146
 
 # output
@@ -44,7 +34,7 @@ PORT    STATE  SERVICE VERSION
 443/tcp closed https
 ```
 
-```bash
+```
 exa -l --sort=size --reverse /git-repos/wordlists/SecLists/Discovery/Web-Content/ | head -n 20
 
 # php extension: see "http-server-header: Apache/2.4.6 (CentOS) PHP/5.4.16"
@@ -78,3 +68,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /lib.php              (Status: 200) [Size: 0]
 /backup               (Status: 301) [Size: 235] [--> http://10.10.10.146/backup/]
 ```
+
+<details>
+
+<summary></summary>
+
+
+
+</details>
