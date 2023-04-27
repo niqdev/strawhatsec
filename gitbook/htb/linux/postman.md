@@ -195,7 +195,7 @@ set SSL true
 exploit
 
 # flag
-cat /toot/root.txt
+cat /root/root.txt
 ```
 
 #### Exploit manually
