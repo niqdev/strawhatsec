@@ -111,11 +111,14 @@ tar -tvf backup.tar
 mkdir -p backup && tar -xvf backup.tar -C backup && cd $_
 ```
 
-Check input params
-* [PHP superglobals](https://www.php.net/manual/en/language.variables.superglobals.php)
-```bash
-grep -Ri '$_' *.php
+Examine PHP files and verify image upload
 
+* [superglobals](https://www.php.net/manual/en/language.variables.superglobals.php)
+* [filesize](https://www.php.net/manual/en/function.filesize.php)
+
+```bash
+# look for input params
+grep -Ri '$_' *.php
 # output
 lib.php:<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
 photos.php:  if ((strpos($exploded[0], '10_10_') === 0) && (!($prefix === $_SERVER["REMOTE_ADDR"])) ) {
@@ -125,16 +128,20 @@ upload.php:    $myFile = $_FILES["myFile"];
 upload.php:    if (!(check_file_type($_FILES["myFile"]) && filesize($_FILES['myFile']['tmp_name']) < 60000)) {
 upload.php:    //$name = $_SERVER['REMOTE_ADDR'].'-'. $myFile["name"];
 upload.php:    $name = str_replace('.','_',$_SERVER['REMOTE_ADDR']).'.'.$ext;
-```
 
-Examine `upload.php` and `lib.php` and verify image upload
-```bash
-# upload form
+# lib.php: upload form
 <form action="/upload.php" method="post" enctype="multipart/form-data">
   <input type="file" name="myFile">
   <br>
   <input type="submit" name="submit" value="go!">
 </form>
+
+# upload.php: filesize($_FILES['myFile']['tmp_name']) < 60000)
+# filesize returns the size of the file in bytes
+# 1 KB == 1024 bytes
+bc
+60000 / 1024
+58
 
 # random image
 curl -sSL -o random.jpg https://picsum.photos/200
@@ -142,4 +149,12 @@ curl -sSL -o random.jpg https://picsum.photos/200
 viu random.jpg
 # upload manually
 http -f POST 10.10.10.146/upload.php submit='go!' myFile@random.jpg
+# verify gallery
+curl -sS http://10.10.10.146/photos.php | pup 'table td img attr{src}'
+# output
+uploads/10_10_14_14.jpg
+uploads/127_0_0_4.png
+uploads/127_0_0_3.png
+uploads/127_0_0_2.png
+uploads/127_0_0_1.png
 ```
