@@ -6,7 +6,7 @@ Info
 * IP: `10.10.10.146`
 
 Vulnerabilities
-* TODO
+* php
 
 <!--
 
@@ -16,7 +16,7 @@ Required tools
 
 Other commands/tools
 ```
-TODO
+exiftool
 ```
 
 -->
@@ -44,6 +44,7 @@ PORT    STATE  SERVICE VERSION
 443/tcp closed https
 ```
 
+Gobuster
 ```bash
 exa -l --sort=size --reverse /git-repos/wordlists/SecLists/Discovery/Web-Content/ | head -n 20
 
@@ -77,4 +78,68 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /upload.php           (Status: 200) [Size: 169]
 /lib.php              (Status: 200) [Size: 0]
 /backup               (Status: 301) [Size: 235] [--> http://10.10.10.146/backup/]
+```
+
+Examine `/backup` path
+```bash
+# firefox and curl override "File Modification Date/Time"
+wget -O backup.tar http://10.10.10.146/backup/backup.tar
+
+exiftool backup.tar
+# output
+ExifTool Version Number         : 12.16
+File Name                       : backup.tar
+Directory                       : .
+File Size                       : 10 KiB
+File Modification Date/Time     : 2019:07:09 11:33:42+00:00
+File Access Date/Time           : 2023:04:28 07:10:27+00:00
+File Inode Change Date/Time     : 2023:04:28 07:10:27+00:00
+File Permissions                : rw-r--r--
+File Type                       : TAR
+File Type Extension             : tar
+MIME Type                       : application/x-tar
+Warning                         : Unsupported file type
+
+# list content
+tar -tvf backup.tar
+-rw-r--r-- root/root       229 2019-07-09 11:33 index.php
+-rw-r--r-- root/root      2001 2019-07-02 11:38 lib.php
+-rw-r--r-- root/root      1871 2019-07-02 12:53 photos.php
+-rw-r--r-- root/root      1331 2019-07-02 12:45 upload.php
+
+# extract content
+mkdir -p backup && tar -xvf backup.tar -C backup && cd $_
+```
+
+Check input params
+* [PHP superglobals](https://www.php.net/manual/en/language.variables.superglobals.php)
+```bash
+grep -Ri '$_' *.php
+
+# output
+lib.php:<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+photos.php:  if ((strpos($exploded[0], '10_10_') === 0) && (!($prefix === $_SERVER["REMOTE_ADDR"])) ) {
+upload.php:if( isset($_POST['submit']) ) {
+upload.php:  if (!empty($_FILES["myFile"])) {
+upload.php:    $myFile = $_FILES["myFile"];
+upload.php:    if (!(check_file_type($_FILES["myFile"]) && filesize($_FILES['myFile']['tmp_name']) < 60000)) {
+upload.php:    //$name = $_SERVER['REMOTE_ADDR'].'-'. $myFile["name"];
+upload.php:    $name = str_replace('.','_',$_SERVER['REMOTE_ADDR']).'.'.$ext;
+```
+
+Examine `upload.php` and `lib.php` and verify image upload
+```bash
+# upload form
+<form action="/upload.php" method="post" enctype="multipart/form-data">
+  <input type="file" name="myFile">
+  <br>
+  <input type="submit" name="submit" value="go!">
+</form>
+
+# random image
+curl -sSL -o random.jpg https://picsum.photos/200
+# terminal viewer
+viu random.jpg
+# upload manually
+http -f POST 10.10.10.146/upload.php submit='go!' myFile@random.jpg
 ```
