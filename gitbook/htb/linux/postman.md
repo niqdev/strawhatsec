@@ -5,7 +5,7 @@ Info
 * Difficulty: easy
 * IP: `10.10.10.160`
 
-Vulnerabilities
+Tags
 * redis
 * webmin
 
