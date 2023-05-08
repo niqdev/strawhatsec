@@ -7,6 +7,7 @@
 * [Linux](htb/linux/README.md)
   * [Postman](htb/linux/postman.md)
   * [Networked](htb/linux/networked.md)
+  * [Haystack](htb/linux/haystack.md)
 
 ## TryHackMe
 
