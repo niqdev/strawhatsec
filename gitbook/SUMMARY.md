@@ -5,9 +5,10 @@
 ## HTB
 
 * [Linux](htb/linux/README.md)
-  * [Postman](htb/linux/postman.md)
-  * [Networked](htb/linux/networked.md)
+  * [Cap](htb/linux/cap.md)
   * [Haystack](htb/linux/haystack.md)
+  * [Networked](htb/linux/networked.md)
+  * [Postman](htb/linux/postman.md)
 
 ## TryHackMe
 
