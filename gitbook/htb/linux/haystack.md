@@ -270,12 +270,12 @@ export TERM=xterm
 
 ### Privilege Escalation
 
-Abuse the fact that Logstash is running with root permissions
+Abuse Logstash running with root permissions
 
 * [Grok filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html)
 
 ```bash
-# enumerate files owned by "kibana" excluing "usr" and "proc" folder
+# enumerate files owned by "kibana" excluding "usr" and "proc" folder
 find / -user kibana 2>/dev/null | grep -v usr | grep -v proc
 find / -group kibana 2>/dev/null | grep -v usr | grep -v proc
 
