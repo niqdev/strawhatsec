@@ -1,9 +1,8 @@
-# Postman
+---
+description: 10.10.10.160
+---
 
-Info
-* OS: Linux
-* Difficulty: easy
-* IP: `10.10.10.160`
+# Postman
 
 Tags
 * redis

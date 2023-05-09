@@ -1,12 +1,12 @@
-# Haystack
+---
+description: 10.10.10.115
+---
 
-Info
-* OS: Linux
-* Difficulty: easy
-* IP: `10.10.10.115`
+# Haystack
 
 Tags
 * elasticsearch
+* logstash
 * kibana
 
 <!--

@@ -1,9 +1,8 @@
-# Networked
+---
+description: 10.10.10.146
+---
 
-Info
-* OS: Linux
-* Difficulty: easy
-* IP: `10.10.10.146`
+# Networked
 
 Tags
 * php
