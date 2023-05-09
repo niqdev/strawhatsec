@@ -27,7 +27,7 @@ file
 
 ## Walkthrough
 
-* [IppSec](http://youtube.com/watch?v=H3t3G70bakM) (video)
+* [IppSec](https://youtube.com/watch?v=H3t3G70bakM) (video)
 
 ### Enumeration
 
