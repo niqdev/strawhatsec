@@ -6,12 +6,14 @@ description: 10.10.10.245
 
 Tags
 * ftp
+* pcap
+* capabilities
 
 <!--
 
 Required tools
 * nmap
-* pcap/wireshark/tcpdump/tshark
+* wireshark/tcpdump/tshark
 
 Other commands/tools
 ```
