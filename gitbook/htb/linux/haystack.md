@@ -170,7 +170,7 @@ cat /home/security/user.txt
 
 ### Lateral Movement
 
-Upload privesc scripts
+Upload privesc script
 ```bash
 mkdir -p /share/www
 

