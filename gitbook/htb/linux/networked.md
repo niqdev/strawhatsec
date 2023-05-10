@@ -61,20 +61,6 @@ gobuster dir \
 
 # output
 ===============================================================
-Gobuster v3.5
-by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
-===============================================================
-[+] Url:                     http://10.10.10.146
-[+] Method:                  GET
-[+] Threads:                 10
-[+] Wordlist:                /git-repos/wordlists/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt
-[+] Negative Status codes:   404
-[+] User Agent:              gobuster/3.5
-[+] Extensions:              php
-[+] Timeout:                 10s
-===============================================================
-2023/04/26 07:44:41 Starting gobuster in directory enumeration mode
-===============================================================
 /index.php            (Status: 200) [Size: 229]
 /uploads              (Status: 301) [Size: 236] [--> http://10.10.10.146/uploads/]
 /photos.php           (Status: 200) [Size: 1302]
