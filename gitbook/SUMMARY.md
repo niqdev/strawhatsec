@@ -16,6 +16,10 @@
 
 * [TODO](tryhackme/todo.md)
 
+## ROOT ME
+
+* [TODO](root-me/todo.md)
+
 ## resources
 
 * [CTF](resources/ctf.md)
