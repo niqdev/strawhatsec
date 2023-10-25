@@ -20,6 +20,10 @@
 
 * [TODO](root-me/todo.md)
 
+## OWASP
+
+* [Juice Shop](owasp/todo.md)
+
 ## resources
 
 * [CTF](resources/ctf.md)
