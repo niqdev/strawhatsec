@@ -22,7 +22,7 @@
 
 ## OWASP
 
-* [Juice Shop](owasp/todo.md)
+* [Juice Shop](owasp/juice-shop.md)
 
 ## resources
 
