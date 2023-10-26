@@ -12,39 +12,38 @@ Resources
 ### Local setup (docker)
 
 ```bash
-# starts vulnerable box
+# starts juice-shop
 hckctl box start vulnerable/owasp-juice-shop
 
-# starts attack box
+# starts background attack box
 hckctl box start parrot-sec
 
-# connect to vulnerable box
+# connect to juice-shop
 # from local machine -> localhost:3000
 # from attack box    -> box-owasp-juice-shop-<RANDOM>:3000
 ```
 
 ### Remote setup (kubernetes)
 
-Start a cluster with [kube-template](https://github.com/hckops/kube-template)
+* [kube-template](https://github.com/hckops/kube-template)
+
 ```bash
 # starts the cluster
 make cluster-up
 make kube-config
 kubectl klock -n hckops pods
-```
 
-```bash
-# starts vulnerable box
+# starts juice-shop
 env HCK_CONFIG_BOX.SIZE=xs hckctl box start vulnerable/owasp-juice-shop --provider kube
 
-# tunnels ports locally
+# tunnels port 3000 locally
 hckctl box open box-owasp-juice-shop-<RANDOM> --no-exec
 
-# connect from local attack box -> hckops.local:3000
-hckctl box start parrot-sec
+# connects from local attack box -> hckops.local:3000
+hckctl box parrot-sec
 
-# connect from remote attack box -> box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
-hckctl box start parrot-sec --provider kube
+# connects from remote attack box -> box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
+hckctl box parrot-sec --provider kube
 ```
 
 ### Setup attack box
