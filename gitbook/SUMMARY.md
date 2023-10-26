@@ -22,7 +22,9 @@
 
 ## OWASP
 
-* [Juice Shop](owasp/juice-shop.md)
+* [Juice Shop](owasp/juice-shop/README.md)
+  * [Injection](owasp/juice-shop/injection.md)
+  * [Broken Authentication](owasp/juice-shop/broken-authentication.md)
 
 ## resources
 
