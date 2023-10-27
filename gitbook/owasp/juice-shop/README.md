@@ -21,6 +21,9 @@ hckctl box start parrot-sec
 # connect to juice-shop
 # from local machine -> localhost:3000
 # from attack box    -> box-owasp-juice-shop-<RANDOM>:3000
+
+# adds host aliases
+echo "$(dig +short box-owasp-juice-shop-<RANDOM>) juiceshop" >> /etc/hosts
 ```
 
 ### Remote setup (kubernetes)
@@ -40,18 +43,19 @@ env HCK_CONFIG_BOX.SIZE=xs hckctl box start vulnerable/owasp-juice-shop --provid
 hckctl box open box-owasp-juice-shop-<RANDOM> --no-exec
 
 # connects from remote attack box -> box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
-hckctl box parrot-sec --provider kube
+env HCK_CONFIG_BOX.SIZE=m hckctl box parrot-sec --provider kube
 
-# FIXME (linux) connects from local attack box -> hckops.local:3000
+# adds host aliases
+echo "$(dig +short box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local) juiceshop" >> /etc/hosts
+
+# FIXME (linux)
+# connects from local attack box -> hckops.local:3000
 hckctl box parrot-sec
 ```
 
 ### Setup attack box
 
 ```bash
-# adds host aliases
-echo "$(dig +short box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local) juice-shop.local juiceshop.local juice-shop juiceshop" >> /etc/hosts
-
 # default password: parrot
 # vnc/noVNC copy&paste clipboard: CTRL+SHIFT+C/V
 vncviewer localhost:5900
