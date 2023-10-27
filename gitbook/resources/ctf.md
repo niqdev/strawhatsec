@@ -63,6 +63,7 @@
 * [OWASP Juice Shop](https://owasp.org/www-project-juice-shop)
 * [Damn Vulnerable Javascript SCA](https://github.com/lunasec-io/damn-vulnerable-js-sca)
 * [Capture the Talent](https://capturethetalent.co.uk)
+* [vAPI](https://github.com/roottusk/vapi)
 
 ### Writeup
 

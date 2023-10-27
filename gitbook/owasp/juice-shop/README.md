@@ -7,7 +7,7 @@ Resources
 
 ## Setup
 
-* [hckctl](https://github.com/hckops/hckctl)
+* [hckctl](https://github.com/hckops/hckctl) version `v0.12.5`
 
 ### Local setup (docker)
 
@@ -39,16 +39,19 @@ env HCK_CONFIG_BOX.SIZE=xs hckctl box start vulnerable/owasp-juice-shop --provid
 # tunnels port 3000 locally
 hckctl box open box-owasp-juice-shop-<RANDOM> --no-exec
 
-# connects from local attack box -> hckops.local:3000
-hckctl box parrot-sec
-
 # connects from remote attack box -> box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
 hckctl box parrot-sec --provider kube
+
+# FIXME (linux) connects from local attack box -> hckops.local:3000
+hckctl box parrot-sec
 ```
 
 ### Setup attack box
 
 ```bash
+# adds host aliases
+echo "$(dig +short box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local) juice-shop.local juiceshop.local juice-shop juiceshop" >> /etc/hosts
+
 # default password: parrot
 # vnc/noVNC copy&paste clipboard: CTRL+SHIFT+C/V
 vncviewer localhost:5900
@@ -66,4 +69,4 @@ install_firefox_foxy_proxy
 ## Challenges
 
 * [Challenge hunting](https://help.owasp-juice.shop/part2)
-* Score Board page (guessed) `http://box-owasp-juice-shop-<RANDOM>:3000/#/score-board`
+* Score Board page (guessed) `http://juiceshop:3000/#/score-board`
