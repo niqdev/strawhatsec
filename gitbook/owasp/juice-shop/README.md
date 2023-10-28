@@ -47,7 +47,7 @@ hckctl box open box-owasp-juice-shop-<RANDOM> --no-exec
 env HCK_CONFIG_BOX.SIZE=m hckctl start box parrot-sec --provider kube
 
 # adds host aliases
-echo "$(dig +short box-owasp-juice-shop-d2qr4.hckops.svc.cluster.local) juiceshop" >> /etc/hosts
+echo "$(dig +short box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local) juiceshop" >> /etc/hosts
 
 # FIXME (linux)
 # connects from local temporary attack box -> hckops.local:3000
@@ -61,14 +61,15 @@ hckctl box parrot-sec
 # vnc/noVNC copy&paste clipboard: CTRL+SHIFT+C/V
 vncviewer localhost:5900
 
-# install burp
+# starts burp on port 8080
 burpsuite
 
-# install add-on
-# name: burpsuite
-# address: localhost
-# port: 8080
+# installs add-on
 install_firefox_foxy_proxy
+install_firefox_tampermonkey
+
+# starts httpie desktop
+httpie
 ```
 
 ## Challenges
