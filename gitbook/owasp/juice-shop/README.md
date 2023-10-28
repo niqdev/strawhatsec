@@ -76,3 +76,14 @@ httpie
 
 * [Challenge hunting](https://help.owasp-juice.shop/part2)
 * Score Board page (guessed) `http://juiceshop:3000/#/score-board`
+
+## Automated tasks
+
+* [sqlmap](https://github.com/sqlmapproject/sqlmap)
+* [NoSQLMap](https://github.com/codingo/NoSQLMap)
+
+```bash
+# TODO https://github.com/sqlmapproject/sqlmap/issues/4671
+
+hckctl task sqlmap --input address=box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000 --provider kube
+```

