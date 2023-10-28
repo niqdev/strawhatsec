@@ -7,7 +7,7 @@ Resources
 
 ## Setup
 
-* [hckctl](https://github.com/hckops/hckctl) version `v0.12.5`
+* [hckctl](https://github.com/hckops/hckctl) version `>v0.12.6`
 
 ### Local setup (docker)
 
@@ -34,6 +34,7 @@ echo "$(dig +short box-owasp-juice-shop-<RANDOM>) juiceshop" >> /etc/hosts
 # starts the cluster
 make cluster-up
 make kube-config
+# watches resources
 kubectl klock -n hckops pods
 
 # starts juice-shop
@@ -43,13 +44,13 @@ env HCK_CONFIG_BOX.SIZE=xs hckctl box start vulnerable/owasp-juice-shop --provid
 hckctl box open box-owasp-juice-shop-<RANDOM> --no-exec
 
 # connects from remote attack box -> box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
-env HCK_CONFIG_BOX.SIZE=m hckctl box parrot-sec --provider kube
+env HCK_CONFIG_BOX.SIZE=m hckctl start box parrot-sec --provider kube
 
 # adds host aliases
-echo "$(dig +short box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local) juiceshop" >> /etc/hosts
+echo "$(dig +short box-owasp-juice-shop-d2qr4.hckops.svc.cluster.local) juiceshop" >> /etc/hosts
 
 # FIXME (linux)
-# connects from local attack box -> hckops.local:3000
+# connects from local temporary attack box -> hckops.local:3000
 hckctl box parrot-sec
 ```
 

