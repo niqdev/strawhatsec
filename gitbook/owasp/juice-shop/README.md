@@ -77,13 +77,24 @@ httpie-ui
 * [Challenge hunting](https://help.owasp-juice.shop/part2)
 * Score Board page (guessed) `http://juiceshop:3000/#/score-board`
 
-## Automated tasks
+## Automated tasks examples
 
 * [sqlmap](https://github.com/sqlmapproject/sqlmap)
 * [NoSQLMap](https://github.com/codingo/NoSQLMap)
 
+Docker provider
+```bash
+# ip of hckops network
+LOCAL_IP=$(hckctl box info box-owasp-juice-shop-<RANDOM> | yq .provider.docker.ip)
+
+hckctl task gobuster --input address=${LOCAL_IP}:3000 \
+  --input wordlist=wordlists/SecLists/Discovery/Web-Content/big.txt
+```
+
+Kubernetes provider
 ```bash
 # TODO https://github.com/sqlmapproject/sqlmap/issues/4671
 
-hckctl task sqlmap --input address=box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000 --provider kube
+hckctl task sqlmap --provider kube \
+  --input address=box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
 ```

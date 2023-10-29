@@ -13,7 +13,11 @@ TODO
 Access a confidential document
 
 ```bash
-TODO
+# no gobuster
+# status code is rigged: always 200 instead of 404
+
+# http://juiceshop:3000/ftp/order_<ORDER_ID>.pdf
+curl -O http://juiceshop:3000/ftp/acquisitions.md
 ```
 
 ## Email Leak
@@ -26,10 +30,12 @@ TODO
 
 ## Exposed Metrics
 
+* [Prometheus](https://prometheus.io/docs/introduction/overview)
+
 Find the endpoint that serves usage data to be scraped by a popular monitoring system
 
 ```bash
-TODO
+http http://juiceshop:3000/metrics
 ```
 
 ## Forgotten Developer Backup
