@@ -3,7 +3,7 @@
 Resources
 
 * [Official documentation](https://owasp.org/www-project-juice-shop)
-* [Pwning OWASP Juice Shop](https://help.owasp-juice.shop)
+* [Pwning OWASP Juice Shop](https://pwning.owasp-juice.shop)
 
 ## Setup
 
@@ -22,7 +22,7 @@ hckctl box start parrot-sec
 # from local machine -> localhost:3000
 # from attack box    -> box-owasp-juice-shop-<RANDOM>:3000
 
-# adds host aliases
+# adds host alias
 echo "$(dig +short box-owasp-juice-shop-<RANDOM>) juiceshop" >> /etc/hosts
 ```
 
@@ -46,7 +46,7 @@ hckctl box open box-owasp-juice-shop-<RANDOM> --no-exec
 # connects from remote attack box -> box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
 env HCK_CONFIG_BOX.SIZE=m hckctl start box parrot-sec --provider kube
 
-# adds host aliases
+# adds host alias
 echo "$(dig +short box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local) juiceshop" >> /etc/hosts
 
 # FIXME (linux)
@@ -69,7 +69,7 @@ install_firefox_foxy_proxy
 install_firefox_tampermonkey
 
 # starts httpie desktop
-httpie
+httpie-ui
 ```
 
 ## Challenges
