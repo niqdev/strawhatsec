@@ -88,6 +88,7 @@ Docker provider
 # ip of hckops network
 LOCAL_IP=$(hckctl box info box-owasp-juice-shop-<RANDOM> | yq .provider.docker.ip)
 
+# default uses /hck/share/wordlists/SecLists/Discovery/Web-Content/common.txt
 hckctl task gobuster --input address=${LOCAL_IP}:3000
 ```
 
