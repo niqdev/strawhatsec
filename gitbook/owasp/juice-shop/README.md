@@ -24,7 +24,7 @@ hckctl box start parrot-sec
 # from attack box    -> box-owasp-juice-shop-<RANDOM>:3000
 
 # adds host alias
-echo "$(dig +short box-owasp-juice-shop-<RANDOM>) juiceshop" >> /etc/hosts
+echo "$(dig +short box-owasp-juice-shop-2cywc) juiceshop" >> /etc/hosts
 ```
 
 ### Remote setup (kubernetes)
@@ -62,21 +62,14 @@ hckctl box parrot-sec
 # vnc/noVNC copy&paste clipboard: CTRL+SHIFT+C/V
 vncviewer localhost:5900
 
-# starts burp on port 8080
+# installs and starts burp on port 8090
+/hck/scripts/install_burpsuite_community.sh
+/hck/scripts/install_firefox_foxy_proxy.sh
 burpsuite
 
-# installs add-on
-install_firefox_foxy_proxy
-install_firefox_tampermonkey
-
 # starts httpie desktop
-httpie-ui
+httpie-desktop
 ```
-
-## Challenges
-
-* [Challenge hunting](https://help.owasp-juice.shop/part2)
-* Score Board page (guessed) `http://juiceshop:3000/#/score-board`
 
 ## Automated tasks examples
 
@@ -99,3 +92,15 @@ Kubernetes provider
 hckctl task sqlmap --provider kube \
   --input address=box-owasp-juice-shop-<RANDOM>.hckops.svc.cluster.local:3000
 ```
+
+## Challenges
+
+* [Challenge hunting](https://help.owasp-juice.shop/part2)
+* Score Board page (guessed) `http://juiceshop:3000/#/score-board`
+
+<!--
+
+* [jwt_tool](https://github.com/ticarpi/jwt_tool)
+* [Hacking JWT Tokens: The None Algorithm](https://blog.pentesteracademy.com/hacking-jwt-tokens-the-none-algorithm-67c14bb15771)
+
+-->
