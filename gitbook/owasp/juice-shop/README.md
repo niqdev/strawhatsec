@@ -103,4 +103,7 @@ hckctl task sqlmap --provider kube \
 * [jwt_tool](https://github.com/ticarpi/jwt_tool)
 * [Hacking JWT Tokens: The None Algorithm](https://blog.pentesteracademy.com/hacking-jwt-tokens-the-none-algorithm-67c14bb15771)
 
+# register user
+curl -sS http://juiceshop:3000/api/Users/ -H 'Content-Type: application/json' --data-raw $'{"email":"a@a.com","password":"12345","passwordRepeat":"12345","securityQuestion":{"id":3,"question":"Mother\'s birth date? (MM/DD/YY)","createdAt":"2023-11-07T08:41:38.130Z","updatedAt":"2023-11-07T08:41:38.130Z"},"securityAnswer":"000000"}' | jq
+
 -->
