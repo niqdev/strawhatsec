@@ -43,12 +43,16 @@
 * [How NAT traversal works](https://tailscale.com/blog/how-nat-traversal-works)
 * [Email explained from first principles](https://explained-from-first-principles.com/email)
 * [The WebSocket Handbook](https://ably.com/blog/introducing-the-websocket-handbook)
-* [Anatomy of a JWT](https://fusionauth.io/learn/expert-advice/tokens/anatomy-of-jwt)
 * [What does it mean to listen on a port?](https://paulbutler.org/2022/what-does-it-mean-to-listen-on-a-port)
 * [Micro BGP Suite: The Swiss Army Knife of Routing Analysis](https://labs.ripe.net/author/lorenzo\_cogotti/micro-bgp-suite-the-swiss-army-knife-of-routing-analysis) - BGP
 * [Tools to explore BGP](https://jvns.ca/blog/2021/10/05/tools-to-look-at-bgp-routes) - BGP
 * [Remmina](https://remmina.org) - Remote Desktop
 * [RustDesk](https://rustdesk.com) - Remote Desktop
+* JWT
+    - [Anatomy of a JWT](https://fusionauth.io/learn/expert-advice/tokens/anatomy-of-jwt)
+    - [jwt_tool](https://github.com/ticarpi/jwt_tool)
+    - [Hacking JWT Tokens: The None Algorithm](https://blog.pentesteracademy.com/hacking-jwt-tokens-the-none-algorithm-67c14bb15771)
+* [Google dork cheatsheet](https://gist.github.com/sundowndev/283efaddbcf896ab405488330d1bbc06)
 
 ### Scanner
 

