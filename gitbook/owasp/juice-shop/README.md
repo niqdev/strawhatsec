@@ -24,7 +24,7 @@ hckctl box start parrot-sec
 # from attack box    -> box-owasp-juice-shop-<RANDOM>:3000
 
 # adds host alias
-echo "$(dig +short box-owasp-juice-shop-2cywc) juiceshop" >> /etc/hosts
+echo "$(dig +short box-owasp-juice-shop-<RANDOM>) juiceshop" >> /etc/hosts
 ```
 
 ### Remote setup (kubernetes)

