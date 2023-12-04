@@ -14,7 +14,7 @@
 
 ## TryHackMe
 
-* [TODO](tryhackme/todo.md)
+* [Advent of Cyber 2023](tryhackme/todo.md)
 
 ## ROOT ME
 
