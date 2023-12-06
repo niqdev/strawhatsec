@@ -227,3 +227,36 @@ hckctl task wfuzz --network-vpn thm --inline -- wfuzz -c \
   -u http://<MACHINE_IP>/login.php \
   -d "username=FUZZ&password=FUZ2Z"
 ```
+
+## Day 5
+
+> A Christmas DOScovery: Tapes of Yule-tide Past (Reverse engineering)
+
+* [DOSBox](https://www.dosbox.com)
+* [Hex to ASCII Text String Converter](https://www.rapidtables.com/convert/number/hex-to-ascii.html)
+
+```
+# CD	Change Directory
+# DIR	Lists all files and directories in the current directory
+# TYPE	Displays the contents of a text file
+# CLS	Clears the screen
+# HELP	Provides help information for DOS commands
+# EDIT	The MS-DOS Editor
+
+TYPE TOOLS\BACKUP\README.TXT
+# exit ALT/OPTION + F + X
+# expects "41 43" magic bytes
+EDIT TOOLS\BACKUP\README.TXT
+
+# open corrupted backup
+TOOLS\BACKUP\BUMASTER.EXE C:\AC2023.BAK
+
+# Borland Turbo C Compiler > Build All
+TC C:\DEV\HELLO\HELLO.C
+# MZ magic bytes
+EDIT HELLO.EXE
+
+# fix magic bytes
+# hexadecimal "41 43" > ASCII AC
+EDIT AC2023.BAK
+```
