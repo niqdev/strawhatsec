@@ -260,3 +260,19 @@ EDIT HELLO.EXE
 # hexadecimal "41 43" > ASCII AC
 EDIT AC2023.BAK
 ```
+
+## Day 6
+
+> Memories of Christmas Past (Memory corruption)
+
+* buffer overflow in C/C++
+* NULL character end of string
+* little-endian `AAAABBBBCCCCDEFG` ASCII > `41x4 + 42x4 + 43x4 + 44454647` hex
+    - integers have a fixed memory space of 4 bytes
+    - `44454647` is stored in memory in reverse order `0x[47 46 45 44]`
+    - `44454647` hex in little-endian is equal to `1195787588`
+
+```
+# d is the star
+aaaabbbbccccddddeeeeffffgggghhhhiiiillllmmmm12d
+```
