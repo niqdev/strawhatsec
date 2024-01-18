@@ -109,5 +109,6 @@ curl -sS http://juiceshop:3000/api/Users/ -H 'Content-Type: application/json' --
 * Injection > SSTi
 * Sensitive Data Exposure > NFT Takeover
 * XML External Entities (XXE) https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing
+* Improper Input Validation > Empty User Registration
 
 -->
