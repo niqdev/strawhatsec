@@ -138,6 +138,7 @@ curl http://juiceshop:3000/rest/products/reviews \
   --data-raw '{"id":{"$ne":"1"},"message":"bar"}'
 ```
 
+<!--
 ## SSTi
 
 Infect the server with juicy malware by abusing arbitrary command execution
@@ -145,6 +146,7 @@ Infect the server with juicy malware by abusing arbitrary command execution
 ```bash
 TODO
 ```
+-->
 
 ## User Credentials
 

@@ -104,4 +104,9 @@ hckctl task sqlmap --provider kube \
 # register user
 curl -sS http://juiceshop:3000/api/Users/ -H 'Content-Type: application/json' --data-raw $'{"email":"a@a.com","password":"12345","passwordRepeat":"12345","securityQuestion":{"id":3,"question":"Mother\'s birth date? (MM/DD/YY)","createdAt":"2023-11-07T08:41:38.130Z","updatedAt":"2023-11-07T08:41:38.130Z"},"securityAnswer":"000000"}' | jq
 
+# missing or skipped challenges
+* Injection > SSTi
+* Sensitive Data Exposure > NFT Takeover
+* XML External Entities (XXE) https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing
+
 -->

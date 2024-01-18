@@ -247,6 +247,7 @@ Access a misplaced SIEM signature file.
 curl http://juiceshop:3000/ftp/suspicious_errors.yml%2500.md -o suspicious_errors.yml
 ```
 
+<!--
 ## NFT Takeover
 
 Take over the wallet containing our official Soul Bound Token (NFT).
@@ -254,6 +255,7 @@ Take over the wallet containing our official Soul Bound Token (NFT).
 ```bash
 TODO missing
 ```
+-->
 
 ## Reset Uvogin's Password
 
