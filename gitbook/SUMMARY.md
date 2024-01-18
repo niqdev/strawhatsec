@@ -26,6 +26,7 @@
   * [Injection](owasp/juice-shop/injection.md)
   * [Broken Authentication](owasp/juice-shop/broken-authentication.md)
   * [Sensitive Data Exposure](owasp/juice-shop/sensitive-data-exposure.md)
+  * [Improper Input Validation](owasp/juice-shop/improper-input-validation.md)
 
 ## resources
 
