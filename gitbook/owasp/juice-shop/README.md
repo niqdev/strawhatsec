@@ -6,6 +6,7 @@ Resources
 * [Pwning OWASP Juice Shop](https://pwning.owasp-juice.shop)
 * [How to hack OWASP Juice Shop](https://www.youtube.com/playlist?list=PL8j1j35M7wtKXpTBE6V1RlN_pBZ4StKZw) (video)
 * [r/owasp_juiceshop](https://www.reddit.com/r/owasp_juiceshop)
+* [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org)
 
 ## Setup
 
